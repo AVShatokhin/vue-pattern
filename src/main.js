@@ -19,8 +19,13 @@ import DashboardPlugin from "./material-dashboard";
 import App from "./App.vue";
 import Chartist from "chartist";
 
+import axios from "axios";
+Vue.prototype.axios = axios;
+Vue.config.productionTip = false;
+
 // router setup
-import routes from "./routes/routes";
+// import routes from "./routes/routes";
+import routes from "./pattern/routes"; // активация боевого маршрута (12.01.2022 by AVShatokhin)
 
 // plugin setup
 Vue.use(VueRouter);
