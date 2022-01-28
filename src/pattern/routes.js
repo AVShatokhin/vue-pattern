@@ -6,6 +6,7 @@ import Login from "@/pattern/pages/PatternLogin.vue";
 import Recover from "@/pattern/pages/PatternRecover.vue";
 import Register from "@/pattern/pages/PatternRegister.vue";
 import Lock from "@/pages/Dashboard/Pages/Lock.vue";
+import Confirmed from "@/pattern/pages/PatternConfirmed.vue";
 
 let authPages = {
   path: "/",
@@ -32,6 +33,11 @@ let authPages = {
       path: "/recover",
       name: "Recover",
       component: Recover,
+    },
+    {
+      path: "/confirmed",
+      name: "Confirmed",
+      component: Confirmed,
     },
   ],
 };

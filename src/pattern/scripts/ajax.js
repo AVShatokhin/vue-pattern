@@ -7,7 +7,7 @@ module.exports.ajax = {
       .axios({
         method: "POST",
         timeout: 15000,
-        url: `${api_url}/register/`,
+        url: `${api_url}register/`,
         data,
       })
       .then((response) => {
