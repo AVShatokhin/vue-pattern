@@ -141,6 +141,16 @@ export default {
                 verticalAlign: "top",
                 type: "warning",
               });
+            } else {
+              this.$notify({
+                message:
+                  `<h3>Ошибка ${r.errorCode}!</h3>` +
+                  `<p>${r.errorMessage}</p>`,
+                icon: "add_alert",
+                horizontalAlign: "center",
+                verticalAlign: "top",
+                type: "warning",
+              });
             }
           }
         },

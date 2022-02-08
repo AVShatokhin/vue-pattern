@@ -86,6 +86,7 @@ export default {
         Register: "Регистрация",
         Recover: "Восстановление пароля",
         Confirmed: "Подтверждение",
+        "New password": "Установка нового пароля",
       },
     };
   },
@@ -96,6 +97,7 @@ export default {
         Login: "./img/login.jpg",
         Register: "./img/register.jpg",
         Confirmed: "./img/lock.jpg",
+        "New password": "./img/lock.jpg",
       };
       return {
         backgroundImage: `url(${images[this.$route.name]})`,

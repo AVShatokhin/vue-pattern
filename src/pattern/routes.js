@@ -4,6 +4,7 @@ import PatternAuthLayout from "@/pattern/layouts/PatternAuthLayout.vue";
 // Pages
 import Login from "@/pattern/pages/PatternLogin.vue";
 import Recover from "@/pattern/pages/PatternRecover.vue";
+import NewPassword from "@/pattern/pages/PatternNewPassword.vue";
 import Register from "@/pattern/pages/PatternRegister.vue";
 import Lock from "@/pages/Dashboard/Pages/Lock.vue";
 import Confirmed from "@/pattern/pages/PatternConfirmed.vue";
@@ -38,6 +39,11 @@ let authPages = {
       path: "/confirmed",
       name: "Confirmed",
       component: Confirmed,
+    },
+    {
+      path: "/new_password/:token",
+      name: "New password",
+      component: NewPassword,
     },
   ],
 };

@@ -17,13 +17,12 @@
 
       <pattern-login-card v-else header-color="green">
         <h4 slot="title" class="title">Восстановление пароля</h4>
-        <p slot="description" class="description">введите E-mail</p>
+        <p slot="description" class="description">введите новый пароль</p>
         <md-field class="md-form-group" slot="inputs">
-          <md-icon>email</md-icon>
-          <label>Email...</label>
-          <md-input v-model="email" type="email"></md-input>
+          <md-icon>lock_outline</md-icon>
+          <label>Новый пароль...</label>
+          <md-input v-model="password" type="password"></md-input>
         </md-field>
-
         <div slot="footer">
           <div align="center" v-if="isSending">
             <md-progress-spinner
@@ -36,8 +35,8 @@
           <md-button
             v-else
             class="md-simple md-success md-lg"
-            v-on:click="recover"
-            >Восстановить</md-button
+            v-on:click="setNewPassword"
+            >Установить</md-button
           >
         </div>
       </pattern-login-card>
@@ -56,14 +55,15 @@ export default {
     return {
       isSending: false,
       isSent: false,
-      email: "",
+      password: "",
     };
   },
   methods: {
-    recover() {
-      if (this.email == "") {
+    setNewPassword() {
+      if (this.$route.params?.token == null) return;
+      if (this.password == "") {
         this.$notify({
-          message: "<h3>Укажите e-mail!</h3>",
+          message: "<h3>Укажите новый пароль!</h3>",
           icon: "add_alert",
           horizontalAlign: "center",
           verticalAlign: "top",
@@ -73,29 +73,43 @@ export default {
       }
 
       this.isSending = true;
-      ajax.recover(this, { email: this.email }, (r) => {
-        if (r?.status == "ok") {
+
+      ajax.setPassword(
+        this,
+        { password: this.password, token: this.$route.params.token },
+        (r) => {
+          if (r?.status == "ok") {
+            this.$notify({
+              message: "<h3>Новый пароль установлен!</h3>",
+              icon: "add_alert",
+              horizontalAlign: "center",
+              verticalAlign: "top",
+              type: "success",
+            });
+            this.isSent = true;
+          } else if (r?.status == "failed") {
+            this.$notify({
+              message:
+                `<h3>Ошибка ${r.errorCode}!</h3>` + `<p>${r.errorMessage}</p>`,
+              icon: "add_alert",
+              horizontalAlign: "center",
+              verticalAlign: "top",
+              type: "warning",
+            });
+          }
+          this.isSending = false;
+        },
+        (err) => {
           this.$notify({
-            message:
-              "<h3>Запрос направлен!</h3>" +
-              "<p>Если указанный e-mail соответствует какому-либо аккаунту, то на него будет направлена ссылка для восстановления пароля.</p>",
-            icon: "add_alert",
-            horizontalAlign: "center",
-            verticalAlign: "top",
-            type: "success",
-          });
-        } else if (r?.status == "failed") {
-          this.$notify({
-            message: "<h3>Ошибка!</h3>" + `<p>${r.errorCode}</p>`,
+            message: `<h3>Ошибка ${err.code}!</h3>` + `<p>${err.message}.</p>`,
             icon: "add_alert",
             horizontalAlign: "center",
             verticalAlign: "top",
             type: "warning",
           });
+          this.isSending = false;
         }
-        this.isSending = false;
-        this.isSent = true;
-      });
+      );
     },
   },
 };
