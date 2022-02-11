@@ -5,7 +5,7 @@ import GlobalComponents from "./globalComponents";
 // A plugin file where you could register global directives
 import GlobalDirectives from "./globalDirectives";
 // Sidebar on the right. Used as a local plugin in DashboardLayout.vue
-import SideBar from "./components/SidebarPlugin";
+// import SideBar from "./components/SidebarPlugin";
 // Tabs plugin. Used on Panels page.
 
 import VueMaterial from "vue-material";
@@ -23,7 +23,7 @@ export default {
     Vue.use(GlobalComponents);
     Vue.use(GlobalDirectives);
     Vue.use(VueMaterial);
-    Vue.use(SideBar);
+    // Vue.use(SideBar);
     Vue.use(Notifications);
   },
 };

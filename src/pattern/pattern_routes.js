@@ -1,12 +1,12 @@
 // Layouts
 import PatternAuthLayout from "@/pattern/layouts/PatternAuthLayout.vue";
+import PatternDashboardLayout from "@/pattern/layouts/PatternDashboardLayout.vue";
 
 // Pages
 import Login from "@/pattern/pages/PatternLogin.vue";
 import Recover from "@/pattern/pages/PatternRecover.vue";
 import NewPassword from "@/pattern/pages/PatternNewPassword.vue";
 import Register from "@/pattern/pages/PatternRegister.vue";
-import Lock from "@/pages/Dashboard/Pages/Lock.vue";
 import Confirmed from "@/pattern/pages/PatternConfirmed.vue";
 
 let authPages = {
@@ -26,11 +26,6 @@ let authPages = {
       component: Register,
     },
     {
-      path: "/lock",
-      name: "Lock",
-      component: Lock,
-    },
-    {
       path: "/recover",
       name: "Recover",
       component: Recover,
@@ -48,6 +43,19 @@ let authPages = {
   ],
 };
 
-const routes = [authPages];
+let dashboard = {
+  path: "/dashboard",
+  component: PatternDashboardLayout,
+  name: "Панель управления",
+  children: [
+    {
+      path: "/users",
+      component: Register,
+      name: "Пользователи",
+    },
+  ],
+};
+
+const routes = [authPages, dashboard];
 
 export default routes;

@@ -14,6 +14,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import DashboardPlugin from "./material-dashboard";
+import SideBar from "./pattern/plugins/PatternSidebarPlugin";
 
 // Plugins
 import App from "./App.vue";
@@ -25,11 +26,12 @@ Vue.config.productionTip = false;
 
 // router setup
 // import routes from "./routes/routes";
-import routes from "./pattern/routes"; // активация боевого маршрута (12.01.2022 by AVShatokhin)
+import routes from "./pattern/pattern_routes"; // активация боевого маршрута (12.01.2022 by AVShatokhin)
 
 // plugin setup
 Vue.use(VueRouter);
 Vue.use(DashboardPlugin);
+Vue.use(SideBar);
 
 // configure router
 const router = new VueRouter({

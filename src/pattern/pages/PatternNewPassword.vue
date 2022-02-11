@@ -45,7 +45,7 @@
 </template>
 <script>
 import { PatternLoginCard } from "@/pattern/components";
-import { ajax } from "@/pattern/scripts/ajax.js";
+import { ajax } from "@/pattern/scripts/pattern_ajax.js";
 
 export default {
   components: {
@@ -87,7 +87,7 @@ export default {
               type: "success",
             });
             this.isSent = true;
-          } else if (r?.status == "failed") {
+          } else {
             this.$notify({
               message:
                 `<h3>Ошибка ${r.errorCode}!</h3>` + `<p>${r.errorMessage}</p>`,
@@ -100,13 +100,6 @@ export default {
           this.isSending = false;
         },
         (err) => {
-          this.$notify({
-            message: `<h3>Ошибка ${err.code}!</h3>` + `<p>${err.message}.</p>`,
-            icon: "add_alert",
-            horizontalAlign: "center",
-            verticalAlign: "top",
-            type: "warning",
-          });
           this.isSending = false;
         }
       );

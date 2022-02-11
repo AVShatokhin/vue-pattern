@@ -83,7 +83,7 @@
 </template>
 <script>
 import { PatternSignupCard } from "@/pattern/components";
-import { ajax } from "@/pattern/scripts/ajax.js";
+import { ajax } from "@/pattern/scripts/pattern_ajax.js";
 
 export default {
   components: {
@@ -108,9 +108,9 @@ export default {
     };
   },
   methods: {
-    async register() {
+    register() {
       this.isRegistering = true;
-      await ajax.register(
+      ajax.register(
         this,
         {
           email: this.email,
@@ -131,39 +131,35 @@ export default {
               type: "success",
             });
           } else {
-            if (r.errorCode === "ER_DUP_ENTRY") {
-              this.$notify({
-                message:
-                  "<h3>Пользователь уже зарегистрирован!</h3>" +
-                  '<p>Воспользуйтесь ссылкой <a href="./#/recover/">"восстановление пароля"</a>.</p>',
-                icon: "add_alert",
-                horizontalAlign: "center",
-                verticalAlign: "top",
-                type: "warning",
-              });
-            } else {
-              this.$notify({
-                message:
-                  `<h3>Ошибка ${r.errorCode}!</h3>` +
-                  `<p>${r.errorMessage}</p>`,
-                icon: "add_alert",
-                horizontalAlign: "center",
-                verticalAlign: "top",
-                type: "warning",
-              });
+            switch (r.errorCode) {
+              case "ER_DUP_ENTRY":
+                this.$notify({
+                  message:
+                    "<h3>Пользователь уже зарегистрирован!</h3>" +
+                    '<p>Воспользуйтесь ссылкой <a href="./#/recover/">"восстановление пароля"</a>.</p>',
+                  icon: "add_alert",
+                  horizontalAlign: "center",
+                  verticalAlign: "top",
+                  type: "warning",
+                });
+                break;
+
+              default:
+                this.$notify({
+                  message:
+                    `<h3>Ошибка ${r.errorCode}!</h3>` +
+                    `<p>${r.errorMessage}</p>`,
+                  icon: "add_alert",
+                  horizontalAlign: "center",
+                  verticalAlign: "top",
+                  type: "warning",
+                });
+                break;
             }
           }
         },
         (err) => {
-          this.$notify({
-            message: `<h3>Ошибка ${err.code}!</h3>` + `<p>${err.message}.</p>`,
-            icon: "add_alert",
-            horizontalAlign: "center",
-            verticalAlign: "top",
-            type: "warning",
-          });
           this.isRegistering = false;
-          console.log(err);
         }
       );
     },

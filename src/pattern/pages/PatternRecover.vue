@@ -46,7 +46,7 @@
 </template>
 <script>
 import { PatternLoginCard } from "@/pattern/components";
-import { ajax } from "@/pattern/scripts/ajax.js";
+import { ajax } from "@/pattern/scripts/pattern_ajax.js";
 
 export default {
   components: {
@@ -73,29 +73,36 @@ export default {
       }
 
       this.isSending = true;
-      ajax.recover(this, { email: this.email }, (r) => {
-        if (r?.status == "ok") {
-          this.$notify({
-            message:
-              "<h3>Запрос направлен!</h3>" +
-              "<p>Если указанный e-mail соответствует какому-либо аккаунту, то на него будет направлена ссылка для восстановления пароля.</p>",
-            icon: "add_alert",
-            horizontalAlign: "center",
-            verticalAlign: "top",
-            type: "success",
-          });
-        } else if (r?.status == "failed") {
-          this.$notify({
-            message: "<h3>Ошибка!</h3>" + `<p>${r.errorCode}</p>`,
-            icon: "add_alert",
-            horizontalAlign: "center",
-            verticalAlign: "top",
-            type: "warning",
-          });
+      ajax.recover(
+        this,
+        { email: this.email },
+        (r) => {
+          if (r?.status == "ok") {
+            this.$notify({
+              message:
+                "<h3>Запрос направлен!</h3>" +
+                "<p>Если указанный e-mail соответствует какому-либо аккаунту, то на него будет направлена ссылка для восстановления пароля.</p>",
+              icon: "add_alert",
+              horizontalAlign: "center",
+              verticalAlign: "top",
+              type: "success",
+            });
+          } else {
+            this.$notify({
+              message: "<h3>Ошибка!</h3>" + `<p>${r.errorCode}</p>`,
+              icon: "add_alert",
+              horizontalAlign: "center",
+              verticalAlign: "top",
+              type: "warning",
+            });
+          }
+          this.isSending = false;
+          this.isSent = true;
+        },
+        (err) => {
+          this.isSending = false;
         }
-        this.isSending = false;
-        this.isSent = true;
-      });
+      );
     },
   },
 };
