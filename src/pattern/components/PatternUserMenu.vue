@@ -21,7 +21,7 @@
           <ul class="nav">
             <slot>
               <li>
-                <a href="#vue">
+                <a v-on:click="profile">
                   <span class="sidebar-mini"
                     ><i class="material-icons">manage_accounts</i></span
                   >
@@ -29,7 +29,7 @@
                 </a>
               </li>
               <li>
-                <a href="#vue">
+                <a v-on:click="passwordChange">
                   <span class="sidebar-mini"
                     ><i class="material-icons">lock</i></span
                   >
@@ -66,7 +66,7 @@ export default {
     },
     avatar: {
       type: String,
-      default: "./img/faces/avatar.jpg",
+      default: "./pattern_img/noava.png",
     },
   },
   data() {
@@ -75,6 +75,13 @@ export default {
     };
   },
   methods: {
+    profile() {
+      this.$router.push("profile");
+    },
+    passwordChange() {
+      this.$router.push("passwordChange");
+    },
+
     logout() {
       this.$router.push("/");
       ajax.logout(

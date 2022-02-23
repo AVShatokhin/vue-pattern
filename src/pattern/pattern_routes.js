@@ -8,6 +8,8 @@ import Recover from "@/pattern/pages/PatternRecover.vue";
 import NewPassword from "@/pattern/pages/PatternNewPassword.vue";
 import Register from "@/pattern/pages/PatternRegister.vue";
 import Confirmed from "@/pattern/pages/PatternConfirmed.vue";
+import Profile from "@/pattern/pages/PatternUserProfile.vue";
+import ProfilePasswordChange from "@/pattern/pages/PatternRegister.vue";
 
 let authPages = {
   path: "/",
@@ -52,6 +54,16 @@ let dashboard = {
       path: "/users",
       component: Register,
       name: "Пользователи",
+    },
+    {
+      path: "/profile",
+      component: Profile,
+      name: "Профиль пользователя",
+    },
+    {
+      path: "/passwordChange",
+      component: ProfilePasswordChange,
+      name: "Смена пароля",
     },
   ],
 };

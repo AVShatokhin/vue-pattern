@@ -6,7 +6,7 @@
       :background-image="sidebarBackgroundImage"
       :data-background-color="sidebarBackgroundColor"
     >
-      <user-menu></user-menu>
+      <user-menu :title="name"></user-menu>
       <mobile-menu></mobile-menu>
       <template slot="links">
         <sidebar-item
@@ -100,6 +100,7 @@ export default {
       sidebarBackgroundImage: "./img/sidebar-2.jpg",
       sidebarMini: true,
       sidebarImg: true,
+      name: "Имя пользователя",
     };
   },
   methods: {
@@ -119,6 +120,8 @@ export default {
   },
   mounted() {
     reinitScrollbar();
+    let userData = localStorage.getItem("userData");
+    this.name = JSON.parse(userData)?.extended?.name;
   },
   watch: {
     sidebarMini() {

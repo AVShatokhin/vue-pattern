@@ -12,12 +12,21 @@
       <pattern-login-card header-color="green">
         <h4 slot="title" class="title">Вход в систему</h4>
         <p slot="description" class="description">введите E-mail и пароль</p>
-        <md-field class="md-form-group" slot="inputs">
+
+        <md-field
+          class="md-form-group"
+          :class="{ 'md-focused': isNotMountedYet }"
+          slot="inputs"
+        >
           <md-icon>email</md-icon>
           <label>Email...</label>
           <md-input v-model="email" type="email"></md-input>
         </md-field>
-        <md-field class="md-form-group" slot="inputs">
+        <md-field
+          class="md-form-group"
+          :class="{ 'md-focused': isNotMountedYet }"
+          slot="inputs"
+        >
           <md-icon>lock_outline</md-icon>
           <label>Пароль...</label>
           <md-input v-model="password" type="password"></md-input>
@@ -58,9 +67,13 @@ export default {
       email: "",
       password: "",
       isSending: false,
+      isNotMountedYet: true,
     };
   },
   mounted() {
+    // для визуального эффекта
+    this.isNotMountedYet = false;
+
     let userData = localStorage.getItem("userData");
     if (userData) {
       this.isSending = true;

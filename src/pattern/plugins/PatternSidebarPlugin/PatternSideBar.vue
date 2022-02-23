@@ -21,8 +21,8 @@
         class="simple-text logo-normal"
         target="_blank"
       >
-        <template v-if="$route.meta.rtlActive">{{ rtlTitle }}</template>
-        <template v-else>{{ title }}</template>
+        <!-- <template v-if="$route.meta.rtlActive">{{ rtlTitle }}</template> -->
+        <template>{{ title }}</template>
       </a>
       <!-- Раскоментируй если нужна подвижная sidebar -->
       <!-- <div class="navbar-minimize">
@@ -69,10 +69,6 @@ export default {
     title: {
       type: String,
       default: "Vue MD PRO",
-    },
-    rtlTitle: {
-      type: String,
-      default: "توقيت الإبداعية",
     },
     activeColor: {
       type: String,
