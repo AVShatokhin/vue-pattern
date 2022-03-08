@@ -6,7 +6,11 @@
       :background-image="sidebarBackgroundImage"
       :data-background-color="sidebarBackgroundColor"
     >
-      <user-menu :title="name"></user-menu>
+      <user-menu
+        :title="userData.extended.name"
+        :avatar="$store.getters.ava_url"
+      ></user-menu>
+
       <mobile-menu></mobile-menu>
       <template slot="links">
         <sidebar-item
@@ -100,8 +104,13 @@ export default {
       sidebarBackgroundImage: "./img/sidebar-2.jpg",
       sidebarMini: true,
       sidebarImg: true,
-      name: "Имя пользователя",
+      // name: "Имя пользователя",
     };
+  },
+  computed: {
+    userData() {
+      return this.$store.state.userData;
+    },
   },
   methods: {
     toggleSidebar() {
@@ -120,8 +129,8 @@ export default {
   },
   mounted() {
     reinitScrollbar();
-    let userData = localStorage.getItem("userData");
-    this.name = JSON.parse(userData)?.extended?.name;
+    let userData = JSON.parse(localStorage.getItem("userData"));
+    this.$store.commit("updateUserData", userData);
   },
   watch: {
     sidebarMini() {

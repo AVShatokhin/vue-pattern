@@ -9,7 +9,7 @@
           <md-icon>perm_identity</md-icon>
         </div>
         <h4 class="title">
-          {{ email }}
+          {{ userData.email }}
         </h4>
       </md-card-header>
 
@@ -18,25 +18,34 @@
           <div class="md-layout-item md-small-size-100 md-size-50">
             <md-field>
               <label>Имя</label>
-              <md-input v-model="name" type="text"></md-input>
+              <md-input v-model="userData.extended.name" type="text"></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-small-size-100 md-size-50">
             <md-field>
               <label>Фамилия</label>
-              <md-input v-model="secondName" type="text"></md-input>
+              <md-input
+                v-model="userData.extended.secondName"
+                type="text"
+              ></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-small-size-100 md-size-100">
             <md-field>
               <label>Должность</label>
-              <md-input v-model="position" type="text"></md-input>
+              <md-input
+                v-model="userData.extended.position"
+                type="text"
+              ></md-input>
             </md-field>
           </div>
           <div class="md-layout-item md-small-size-100 md-size-33">
             <md-field>
               <label>Телефон</label>
-              <md-input v-model="phone" type="text"></md-input>
+              <md-input
+                v-model="userData.extended.phone"
+                type="text"
+              ></md-input>
             </md-field>
           </div>
 
@@ -63,21 +72,12 @@ export default {
     },
   },
   data() {
-    return {
-      name: "",
-      email: "",
-      secondName: "",
-      position: "",
-      phone: "",
-    };
+    return {};
   },
-  mounted() {
-    let userData = localStorage.getItem("userData");
-    this.name = JSON.parse(userData)?.extended?.name;
-    this.secondName = JSON.parse(userData)?.extended?.secondName;
-    this.position = JSON.parse(userData)?.extended?.position;
-    this.phone = JSON.parse(userData)?.extended?.phone;
-    this.email = JSON.parse(userData).email;
+  computed: {
+    userData() {
+      return this.$store.state.userData;
+    },
   },
   methods: {
     getClass: function (headerColor) {
@@ -87,10 +87,10 @@ export default {
       ajax.saveProfile(
         this,
         {
-          name: this.name,
-          secondName: this.secondName,
-          position: this.position,
-          phone: this.phone,
+          name: this.userData.extended.name,
+          secondName: this.userData.extended.secondName,
+          position: this.userData.extended.position,
+          phone: this.userData.extended.phone,
         },
         (r) => {
           if (r.status == "ok") {

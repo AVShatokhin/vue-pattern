@@ -1,11 +1,11 @@
 <template>
   <md-card class="md-card-profile">
     <div class="md-card-avatar">
-      <img class="img" id="ava" :src="imageSRC" />
+      <img class="img" id="ava" :src="$store.getters.ava_url" />
     </div>
 
     <md-card-content>
-      <h6 class="category text-gray">{{ roles }}</h6>
+      <h6 class="category text-gray">{{ userData.role }}</h6>
 
       <md-button class="md-info">
         <i class="material-icons">photo_camera_front</i
@@ -22,11 +22,15 @@
         </label>
       </md-button>
 
-      <md-button class="md-success" @click="sendAva">
+      <md-button class="md-success" :disabled="avaNotChanged" @click="sendAva">
         <i class="material-icons">check_circle</i>Сохранить</md-button
       >
 
-      <md-button class="md-danger" @click="deleteAva">
+      <md-button
+        class="md-danger"
+        :disabled="$store.getters.no_ava"
+        @click="deleteAva"
+      >
         <i class="material-icons">delete</i>Удалить</md-button
       >
     </md-card-content>
@@ -45,19 +49,45 @@ export default {
   },
   data() {
     return {
-      roles: "",
-      imageSRC: "./pattern_img/noava.png",
+      avaNotChanged: true,
     };
   },
-  mounted() {
-    let userData = localStorage.getItem("userData");
-    this.avatar = JSON.parse(userData)?.extended?.avatar;
-    this.roles = JSON.parse(userData)?.role;
-    this.imageSRC = this.cardUserImage;
+  computed: {
+    userData() {
+      return this.$store.state.userData;
+    },
   },
   methods: {
     deleteAva: function () {
-      this.imageSRC = "./pattern_img/noava.png";
+      ajax.deleteAva(
+        this,
+        {},
+        (r) => {
+          if (r.status == "ok") {
+            localStorage.setItem("userData", JSON.stringify(r.userData));
+            this.$store.commit("deleteAva");
+            this.avaNotChanged = true;
+            this.$notify({
+              message: `<h3>Фото удалено!</h3>`,
+              icon: "add_alert",
+              horizontalAlign: "center",
+              verticalAlign: "top",
+              type: "success",
+            });
+          } else {
+            this.$notify({
+              message:
+                `<h3>Ошибка ${r?.errorCode}!</h3>` +
+                `<p>${r?.errorMessage}.</p>`,
+              icon: "add_alert",
+              horizontalAlign: "center",
+              verticalAlign: "top",
+              type: "warning",
+            });
+          }
+        },
+        (err) => {}
+      );
     },
     sendAva: function () {
       var formData = new FormData();
@@ -69,6 +99,7 @@ export default {
         (r) => {
           if (r.status == "ok") {
             localStorage.setItem("userData", JSON.stringify(r.userData));
+            this.avaNotChanged = true;
             this.$notify({
               message: `<h3>Фото сохранено!</h3>`,
               icon: "add_alert",
@@ -94,7 +125,8 @@ export default {
     handleFileUpload: function (event) {
       var reader = new FileReader();
       reader.onloadend = () => {
-        this.imageSRC = reader.result;
+        this.$store.commit("updateAva", reader.result);
+        this.avaNotChanged = false;
       };
       reader.readAsDataURL(event.target.files[0]);
     },

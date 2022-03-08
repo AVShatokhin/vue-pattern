@@ -115,6 +115,7 @@ export default {
         (r) => {
           if (r.status == "ok") {
             localStorage.setItem("userData", JSON.stringify(r.userData));
+            this.$store.commit("updateUserData", r.userData);
             this.$router.push("dashboard");
           } else {
             this.$notify({
