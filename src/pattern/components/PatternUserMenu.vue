@@ -11,7 +11,8 @@
         @click.capture="clicked"
       >
         <span>
-          {{ title }}
+          <!-- {{ title }} -->
+          {{ userName }}
           <b class="caret"></b>
         </span>
       </a>
@@ -73,6 +74,11 @@ export default {
     return {
       isClosed: true,
     };
+  },
+  computed: {
+    userName() {
+      return this.title || "Имя пользователя";
+    },
   },
   methods: {
     profile() {

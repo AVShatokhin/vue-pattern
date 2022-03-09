@@ -5,7 +5,11 @@
     </div>
 
     <md-card-content>
-      <h6 class="category text-gray">{{ userData.role }}</h6>
+      <div>
+        <badge v-for="role in userData.roles" :key="role" type="info">{{
+          role
+        }}</badge>
+      </div>
 
       <md-button class="md-info">
         <i class="material-icons">photo_camera_front</i
@@ -38,8 +42,13 @@
 </template>
 <script>
 import { ajax } from "@/pattern/scripts/pattern_ajax.js";
+import { Badge } from "@/components/";
+//import Badge from '../../../components/Badge.vue';
 
 export default {
+  components: {
+    Badge,
+  },
   name: "user-card",
   props: {
     cardUserImage: {
