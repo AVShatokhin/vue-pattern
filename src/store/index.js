@@ -10,7 +10,7 @@ export default new Vuex.Store({
       uid: 0,
       confirmd: 0,
       blocked: 0,
-      role: "",
+      roles: [],
       email: "",
       token: "",
       extended: {
