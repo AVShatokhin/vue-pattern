@@ -9,7 +9,7 @@ import NewPassword from "@/pattern/pages/PatternNewPassword.vue";
 import Register from "@/pattern/pages/PatternRegister.vue";
 import Confirmed from "@/pattern/pages/PatternConfirmed.vue";
 import Profile from "@/pattern/pages/PatternUserProfile.vue";
-import ProfilePasswordChange from "@/pattern/pages/PatternRegister.vue";
+import ProfilePasswordChange from "@/pattern/pages/PatternChangePassword.vue";
 
 let authPages = {
   path: "/",
