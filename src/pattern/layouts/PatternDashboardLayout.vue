@@ -130,7 +130,9 @@ export default {
   mounted() {
     reinitScrollbar();
     let userData = JSON.parse(localStorage.getItem("userData"));
+    let frontConfig = JSON.parse(localStorage.getItem("frontConfig"));
     this.$store.commit("updateUserData", userData);
+    this.$store.commit("updateFrontConfig", frontConfig);
   },
   watch: {
     sidebarMini() {

@@ -6,6 +6,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    frontConfig: {
+      avatars_base_url: "",
+    },
     userData: {
       uid: 0,
       confirmd: 0,
@@ -25,6 +28,9 @@ export default new Vuex.Store({
     updateUserData(state, userData) {
       state.userData = userData;
     },
+    updateFrontConfig(state, frontConfig) {
+      state.frontConfig = frontConfig;
+    },
     deleteAva(state) {
       let tmp = state.userData.extended;
       delete tmp["ava_url"];
@@ -40,7 +46,11 @@ export default new Vuex.Store({
   actions: {},
   getters: {
     ava_url(state) {
-      return state.userData.extended?.ava_url || "./pattern_img/noava.png";
+      return (
+        state.frontConfig.avatars_base_url +
+        "/" +
+        (state.userData.extended?.ava_url || "./pattern_img/noava.png")
+      );
     },
     no_ava(state) {
       return state.userData.extended?.ava_url ? false : true;
