@@ -50,7 +50,7 @@ export default {
   methods: {
     changePassword() {
       if (this.newPassword != this.newPasswordConfirm) {
-        console.log("Новый пароль не совпадает с подтверждением пароля");
+        // console.log("Новый пароль не совпадает с подтверждением пароля");
         this.$notify({
           message: `<h3>Новый пароль не совпадает с подтверждением пароля!</h3>`,
           icon: "add_alert",
@@ -62,7 +62,7 @@ export default {
       }
 
       if (this.newPassword.length < 6) {
-        console.log("Слишком короткий пароль");
+        // console.log("Слишком короткий пароль");
         this.$notify({
           message: `<h3>Слишком короткий пароль!</h3>`,
           icon: "add_alert",

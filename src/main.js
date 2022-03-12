@@ -13,8 +13,7 @@
 
 import Vue from "vue";
 import store from "./store/index.js";
-
-// import Vuex from "vuex";
+import appConfig from "./app/app_main.js";
 
 import VueRouter from "vue-router";
 import DashboardPlugin from "./material-dashboard";
@@ -26,6 +25,7 @@ import Chartist from "chartist";
 
 import axios from "axios";
 Vue.prototype.axios = axios;
+Vue.prototype.appConfig = appConfig;
 Vue.config.productionTip = false;
 
 // router setup
@@ -33,21 +33,9 @@ Vue.config.productionTip = false;
 import routes from "./pattern/pattern_routes"; // активация боевого маршрута (12.01.2022 by AVShatokhin)
 
 // plugin setup
-// Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.use(DashboardPlugin);
 Vue.use(SideBar);
-
-// const store = new Vuex.Store({
-//   state: {
-//     count: 0,
-//   },
-//   mutations: {
-//     increment(state) {
-//       state.count++;
-//     },
-//   },
-// });
 
 // configure router
 const router = new VueRouter({

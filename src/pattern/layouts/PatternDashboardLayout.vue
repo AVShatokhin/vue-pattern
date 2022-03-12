@@ -5,6 +5,8 @@
       :active-color="sidebarBackground"
       :background-image="sidebarBackgroundImage"
       :data-background-color="sidebarBackgroundColor"
+      :title="appName"
+      :link="appLink"
     >
       <user-menu
         :title="userData.extended.name"
@@ -84,7 +86,7 @@ function reinitScrollbar() {
 }
 
 import TopNavbar from "@/pattern/components/PatternTopNavBar.vue";
-import ContentFooter from "@/pattern/components/PatternContentFooter.vue";
+import ContentFooter from "@/app/components/PatternContentFooter.vue";
 import MobileMenu from "@/pattern/components/PatternMobileMenu.vue";
 import UserMenu from "@/pattern/components/PatternUserMenu.vue";
 import { ZoomCenterTransition } from "vue2-transitions";
@@ -101,7 +103,7 @@ export default {
     return {
       sidebarBackgroundColor: "black",
       sidebarBackground: "green",
-      sidebarBackgroundImage: "./img/sidebar-2.jpg",
+      sidebarBackgroundImage: "./pattern_img/sidebar.png",
       sidebarMini: true,
       sidebarImg: true,
       // name: "Имя пользователя",
@@ -110,6 +112,12 @@ export default {
   computed: {
     userData() {
       return this.$store.state.userData;
+    },
+    appName() {
+      return this.appConfig.appName;
+    },
+    appLink() {
+      return this.appConfig.appLink;
     },
   },
   methods: {

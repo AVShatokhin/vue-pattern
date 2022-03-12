@@ -46,11 +46,22 @@ export default new Vuex.Store({
   actions: {},
   getters: {
     ava_url(state) {
-      return (
-        state.frontConfig.avatars_base_url +
-        "/" +
-        (state.userData.extended?.ava_url || "./pattern_img/noava.png")
-      );
+      if (state.userData.extended?.ava_url ? false : true) {
+        return "./pattern_img/noava.png";
+      } else {
+        try {
+          let url = new URL(state.userData.extended?.ava_url);
+          if (url.protocol == "data:") {
+            return state.userData.extended?.ava_url;
+          }
+        } catch {
+          return (
+            state.frontConfig.avatars_base_url +
+            "/" +
+            state.userData.extended?.ava_url
+          );
+        }
+      }
     },
     no_ava(state) {
       return state.userData.extended?.ava_url ? false : true;
