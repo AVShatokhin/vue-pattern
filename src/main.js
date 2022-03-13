@@ -50,6 +50,12 @@ const router = new VueRouter({
   linkExactActiveClass: "nav-item active",
 });
 
+// router.beforeEach((to, from, next) => {
+//   console.log(to.fullPath == from.fullPath);
+//   if (to.fullPath == from.fullPath) return false;
+//   next();
+// });
+
 // global library setup
 Vue.prototype.$Chartist = Chartist;
 

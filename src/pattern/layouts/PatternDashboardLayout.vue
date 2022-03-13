@@ -13,7 +13,7 @@
         :avatar="$store.getters.ava_url"
       ></user-menu>
 
-      <mobile-menu></mobile-menu>
+      <!-- <mobile-menu></mobile-menu> -->
       <template slot="links">
         <sidebar-item
           :link="{
@@ -87,7 +87,7 @@ function reinitScrollbar() {
 
 import TopNavbar from "@/pattern/components/PatternTopNavBar.vue";
 import ContentFooter from "@/app/components/PatternContentFooter.vue";
-import MobileMenu from "@/pattern/components/PatternMobileMenu.vue";
+// import MobileMenu from "@/pattern/components/PatternMobileMenu.vue";
 import UserMenu from "@/pattern/components/PatternUserMenu.vue";
 import { ZoomCenterTransition } from "vue2-transitions";
 
@@ -95,7 +95,7 @@ export default {
   components: {
     TopNavbar,
     ContentFooter,
-    MobileMenu,
+    // MobileMenu,
     UserMenu,
     ZoomCenterTransition,
   },

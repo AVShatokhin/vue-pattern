@@ -82,10 +82,14 @@ export default {
   },
   methods: {
     profile() {
-      this.$router.push("profile");
+      if (this.$router.history.current.fullPath != "/profile") {
+        this.$router.push("profile");
+      }
     },
     passwordChange() {
-      this.$router.push("passwordChange");
+      if (this.$router.history.current.fullPath != "/passwordChange") {
+        this.$router.push("passwordChange");
+      }
     },
 
     logout() {
