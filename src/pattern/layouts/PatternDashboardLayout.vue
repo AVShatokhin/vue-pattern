@@ -16,6 +16,17 @@
       <!-- <mobile-menu></mobile-menu> -->
       <template slot="links">
         <sidebar-item
+          v-for="item in $store.getters.menuItems"
+          :key="item.path"
+          :link="{
+            name: item.name,
+            icon: item.icon,
+            path: item.path,
+          }"
+        >
+        </sidebar-item>
+
+        <!-- <sidebar-item
           :link="{
             name: 'Панель управления',
             icon: 'dashboard',
@@ -30,7 +41,7 @@
             path: '/users',
           }"
         >
-        </sidebar-item>
+        </sidebar-item> -->
       </template>
     </side-bar>
     <div class="main-panel">
@@ -139,6 +150,8 @@ export default {
     reinitScrollbar();
     let userData = JSON.parse(localStorage.getItem("userData"));
     let frontConfig = JSON.parse(localStorage.getItem("frontConfig"));
+    let menuItems = JSON.parse(localStorage.getItem("menuItems"));
+    this.$store.commit("updateMenuItems", menuItems);
     this.$store.commit("updateUserData", userData);
     this.$store.commit("updateFrontConfig", frontConfig);
   },

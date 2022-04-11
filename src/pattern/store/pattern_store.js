@@ -9,6 +9,7 @@ export default new Vuex.Store({
     frontConfig: {
       avatars_base_url: "",
     },
+    menuItems: [],
     userData: {
       uid: 0,
       confirmd: 0,
@@ -30,6 +31,9 @@ export default new Vuex.Store({
     },
     updateFrontConfig(state, frontConfig) {
       state.frontConfig = frontConfig;
+    },
+    updateMenuItems(state, menuItems) {
+      state.menuItems = menuItems;
     },
     deleteAva(state) {
       let tmp = state.userData.extended;
@@ -62,6 +66,9 @@ export default new Vuex.Store({
           );
         }
       }
+    },
+    menuItems(state) {
+      return state.menuItems;
     },
     no_ava(state) {
       return state.userData.extended?.ava_url ? false : true;

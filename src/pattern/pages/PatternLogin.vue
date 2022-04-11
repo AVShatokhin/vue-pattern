@@ -57,6 +57,45 @@
 <script>
 import { PatternLoginCard } from "@/pattern/components";
 import { ajax } from "@/pattern/scripts/pattern_ajax.js";
+import menuItems from "@/app/menuItems.js";
+import pattern_menuItems from "@/pattern/pattern_menuItems.js";
+
+let calcMenuItems = (roles) => {
+  let __newMenu = [];
+
+  let check_roles = (__item, roles) => {
+    let __match = false;
+    __item.roles.forEach((__role) => {
+      if (roles.filter((r) => r == __role).length > 0) {
+        __match = true;
+      }
+    });
+    if (__match) {
+      __newMenu.push(__item);
+    }
+  };
+
+  menuItems.forEach((__item) => {
+    check_roles(__item, roles);
+  });
+
+  pattern_menuItems.forEach((__item) => {
+    check_roles(__item, roles);
+  });
+
+  return __newMenu;
+};
+
+let initLogin = (component, r) => {
+  let __menuItems = calcMenuItems(r.userData.roles);
+  localStorage.setItem("userData", JSON.stringify(r.userData));
+  localStorage.setItem("menuItems", JSON.stringify(__menuItems));
+  localStorage.setItem("frontConfig", JSON.stringify(r.frontConfig));
+  component.$store.commit("updateUserData", r.userData);
+  component.$store.commit("updateFrontConfig", r.frontConfig);
+  component.$store.commit("updateMenuItems", __menuItems);
+  component.$router.push("/dashboard");
+};
 
 export default {
   components: {
@@ -82,11 +121,7 @@ export default {
         { token: JSON.parse(userData).token },
         (r) => {
           if (r.status == "ok") {
-            localStorage.setItem("userData", JSON.stringify(r.userData));
-            localStorage.setItem("frontConfig", JSON.stringify(r.frontConfig));
-            this.$store.commit("updateUserData", r.userData);
-            this.$store.commit("updateFrontConfig", r.frontConfig);
-            this.$router.push("/dashboard");
+            initLogin(this, r);
           } else {
             localStorage.removeItem("userData");
             this.$notify({
@@ -127,11 +162,7 @@ export default {
         { email: this.email, password: this.password },
         (r) => {
           if (r.status == "ok") {
-            localStorage.setItem("userData", JSON.stringify(r.userData));
-            localStorage.setItem("frontConfig", JSON.stringify(r.frontConfig));
-            this.$store.commit("updateUserData", r.userData);
-            this.$store.commit("updateFrontConfig", r.frontConfig);
-            this.$router.push("dashboard");
+            initLogin(this, r);
           } else {
             this.$notify({
               message:

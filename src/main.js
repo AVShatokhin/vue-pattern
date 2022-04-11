@@ -12,7 +12,7 @@
 // * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 import Vue from "vue";
-import store from "./store/index.js";
+import store from "./pattern/store/pattern_store.js";
 import appConfig from "./app/app_main.js";
 
 import VueRouter from "vue-router";
