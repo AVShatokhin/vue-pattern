@@ -41,7 +41,7 @@
   </md-card>
 </template>
 <script>
-import { ajax } from "@/pattern/scripts/pattern_ajax.js";
+// import { ajax } from "@/pattern/pattern_ajax.js";
 import { Badge } from "@/components/";
 //import Badge from '../../../components/Badge.vue';
 
@@ -68,7 +68,7 @@ export default {
   },
   methods: {
     deleteAva: function () {
-      ajax.deleteAva(
+      this.ajax.deleteAva(
         this,
         {},
         (r) => {
@@ -102,7 +102,7 @@ export default {
       var formData = new FormData();
       var imagefile = document.querySelector("#avaFile");
       formData.append("new_ava", imagefile.files[0]);
-      ajax.uploadAva(
+      this.ajax.uploadAva(
         this,
         formData,
         (r) => {

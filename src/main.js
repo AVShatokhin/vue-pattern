@@ -12,7 +12,8 @@
 // * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 import Vue from "vue";
-import store from "./pattern/store/pattern_store.js";
+import store from "./pattern/pattern_store.js";
+import ajax from "./pattern/pattern_ajax.js";
 import appConfig from "./app/app_main.js";
 
 import VueRouter from "vue-router";
@@ -26,6 +27,7 @@ import Chartist from "chartist";
 import axios from "axios";
 Vue.prototype.axios = axios;
 Vue.prototype.appConfig = appConfig;
+Vue.prototype.ajax = ajax;
 Vue.config.productionTip = false;
 
 // router setup

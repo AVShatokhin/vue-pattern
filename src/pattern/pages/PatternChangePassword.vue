@@ -36,8 +36,6 @@
   </div>
 </template>
 <script>
-import { ajax } from "@/pattern/scripts/pattern_ajax.js";
-
 export default {
   components: {},
   data() {
@@ -73,7 +71,7 @@ export default {
         return;
       }
 
-      ajax.changePassword(
+      this.ajax.changePassword(
         this,
         { oldPassword: this.oldPassword, newPassword: this.newPassword },
         (r) => {

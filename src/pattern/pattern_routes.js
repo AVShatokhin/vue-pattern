@@ -11,6 +11,8 @@ import Confirmed from "@/pattern/pages/PatternConfirmed.vue";
 import Profile from "@/pattern/pages/PatternUserProfile.vue";
 import ProfilePasswordChange from "@/pattern/pages/PatternChangePassword.vue";
 
+import app_routes from "@/app/app_routes.js";
+
 let authPages = {
   path: "/",
   redirect: "/login",
@@ -48,7 +50,7 @@ let authPages = {
 let dashboard = {
   path: "/dashboard",
   component: PatternDashboardLayout,
-  name: "Панель управления",
+  name: "",
   children: [
     {
       path: "/users",
@@ -67,6 +69,8 @@ let dashboard = {
     },
   ],
 };
+
+dashboard.children = dashboard.children.concat(app_routes);
 
 const routes = [authPages, dashboard];
 

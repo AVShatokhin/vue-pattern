@@ -54,7 +54,7 @@
 </template>
 <script>
 import { CollapseTransition } from "vue2-transitions";
-import { ajax } from "@/pattern/scripts/pattern_ajax.js";
+// import { ajax } from "@/pattern/pattern_ajax.js";
 
 export default {
   components: {
@@ -94,7 +94,7 @@ export default {
 
     logout() {
       this.$router.push("/");
-      ajax.logout(
+      this.ajax.logout(
         this,
         { token: JSON.parse(localStorage.getItem("userData")).token },
         () => {},

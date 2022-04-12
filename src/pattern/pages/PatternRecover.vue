@@ -46,7 +46,7 @@
 </template>
 <script>
 import { PatternLoginCard } from "@/pattern/components";
-import { ajax } from "@/pattern/scripts/pattern_ajax.js";
+// import { ajax } from "@/pattern/pattern_ajax.js";
 
 export default {
   components: {
@@ -73,7 +73,7 @@ export default {
       }
 
       this.isSending = true;
-      ajax.recover(
+      this.ajax.recover(
         this,
         { email: this.email },
         (r) => {

@@ -1,5 +1,7 @@
 /* eslint-disable */
-let api_url = "http://127.0.0.1:3000/api/";
+
+import app_ajax from "@/app/app_ajax.js";
+import { api_url } from "@/app/app_ajax.js";
 
 let defaultCatch_CB = function (component, err) {
   component.$notify({
@@ -11,7 +13,7 @@ let defaultCatch_CB = function (component, err) {
   });
 };
 
-module.exports.ajax = {
+let pattern_ajax = {
   register: (component, data, when_CB, catch_CB) => {
     component
       .axios({
@@ -214,3 +216,9 @@ module.exports.ajax = {
       });
   },
 };
+
+for (let method in app) {
+  pattern_ajax[method] = app_ajax[method];
+}
+
+export default pattern_ajax;

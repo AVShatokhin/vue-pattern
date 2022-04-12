@@ -56,9 +56,9 @@
 </template>
 <script>
 import { PatternLoginCard } from "@/pattern/components";
-import { ajax } from "@/pattern/scripts/pattern_ajax.js";
-import menuItems from "@/app/menuItems.js";
+//import app_menuItems from "@/app/app_menuItems.js";
 import pattern_menuItems from "@/pattern/pattern_menuItems.js";
+// import { ajax } from "@/pattern/pattern_ajax.js";
 
 let calcMenuItems = (roles) => {
   let __newMenu = [];
@@ -75,9 +75,9 @@ let calcMenuItems = (roles) => {
     }
   };
 
-  menuItems.forEach((__item) => {
-    check_roles(__item, roles);
-  });
+  // app_menuItems.forEach((__item) => {
+  //   check_roles(__item, roles);
+  // });
 
   pattern_menuItems.forEach((__item) => {
     check_roles(__item, roles);
@@ -116,7 +116,8 @@ export default {
     let userData = localStorage.getItem("userData");
     if (userData) {
       this.isSending = true;
-      ajax.checkToken(
+      console.log(this);
+      this.ajax.checkToken(
         this,
         { token: JSON.parse(userData).token },
         (r) => {
@@ -157,7 +158,7 @@ export default {
       }
 
       this.isSending = true;
-      ajax.login(
+      this.ajax.login(
         this,
         { email: this.email, password: this.password },
         (r) => {

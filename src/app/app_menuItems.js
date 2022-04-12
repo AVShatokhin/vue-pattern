@@ -2,9 +2,9 @@
 
 export default [
   {
-    name: "Панель управления",
+    name: "Диспетчер",
     icon: "dashboard",
-    path: "/dashboard",
+    path: "/dispetcher",
     roles: ["default"],
   },
 ];

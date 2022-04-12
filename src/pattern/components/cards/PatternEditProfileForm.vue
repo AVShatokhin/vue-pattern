@@ -61,7 +61,7 @@
   </form>
 </template>
 <script>
-import { ajax } from "@/pattern/scripts/pattern_ajax.js";
+// import { ajax } from "@/pattern/pattern_ajax.js";
 
 export default {
   name: "edit-profile-form",
@@ -84,7 +84,7 @@ export default {
       return "md-card-header-" + headerColor + "";
     },
     saveProfile: function () {
-      ajax.saveProfile(
+      this.ajax.saveProfile(
         this,
         {
           name: this.userData.extended.name,

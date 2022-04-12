@@ -1,4 +1,5 @@
 /* eslint-disable */
+import app_menuItems from "@/app/app_menuItems.js";
 
 export default [
   {
@@ -7,4 +8,6 @@ export default [
     path: "/users",
     roles: ["admin"],
   },
-];
+]
+  .concat(app_menuItems)
+  .reverse();

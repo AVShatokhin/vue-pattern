@@ -83,7 +83,7 @@
 </template>
 <script>
 import { PatternSignupCard } from "@/pattern/components";
-import { ajax } from "@/pattern/scripts/pattern_ajax.js";
+// import { ajax } from "@/pattern/pattern_ajax.js";
 
 export default {
   components: {
@@ -110,7 +110,7 @@ export default {
   methods: {
     register() {
       this.isRegistering = true;
-      ajax.register(
+      this.ajax.register(
         this,
         {
           email: this.email,
