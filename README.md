@@ -32,8 +32,8 @@
   * **/vue-pattern/app/app_menuItems.js** - кастомное меню
   * **/vue-pattern/app/app_routes.js** - кастомные маршруты в рамках dashboard
   * **/vue-pattern/app/app_ajax.js** - кастомная библиотека ajax
-  * **/vue-pattern/app/app_store.js** - кастомнный объект для Vuex
-  * **/vue-pattern/app/app_roles.js** - кастомнный объект для описания возможных ролей пользователей
+  * **/vue-pattern/app/app_store.js** - кастомный объект для Vuex
+  * **/vue-pattern/app/app_roles.js** - кастомный объект для описания возможных ролей пользователей
   
 ## Переключение к стандартной теме в main.js
 
