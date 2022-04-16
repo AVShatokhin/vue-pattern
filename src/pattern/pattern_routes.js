@@ -10,6 +10,7 @@ import Register from "@/pattern/pages/PatternRegister.vue";
 import Confirmed from "@/pattern/pages/PatternConfirmed.vue";
 import Profile from "@/pattern/pages/PatternUserProfile.vue";
 import ProfilePasswordChange from "@/pattern/pages/PatternChangePassword.vue";
+import Users from "@/pattern/pages/PatternUsers.vue";
 
 import app_routes from "@/app/app_routes.js";
 
@@ -54,7 +55,7 @@ let dashboard = {
   children: [
     {
       path: "/users",
-      component: Register,
+      component: Users,
       name: "Пользователи",
     },
     {

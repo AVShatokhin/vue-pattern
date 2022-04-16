@@ -147,7 +147,6 @@ export default {
     reinitScrollbar();
   },
   mounted() {
-    console.log(this.$store);
     reinitScrollbar();
     let userData = JSON.parse(localStorage.getItem("userData"));
     let frontConfig = JSON.parse(localStorage.getItem("frontConfig"));
