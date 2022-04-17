@@ -14,10 +14,43 @@
             :value="myModel"
             class="paginated-table table-striped table-hover"
           >
-            <!-- <md-table-toolbar>
-              <h4>toolbar</h4>
-            </md-table-toolbar> -->
+            <md-table-toolbar>
+              <md-field>
+                <label for="pages">Количество на странице</label>
+                <md-select v-model="pagination.perPage" name="pages">
+                  <md-option
+                    v-for="item in pagination.perPageOptions"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  >
+                    {{ item }}
+                  </md-option>
+                </md-select>
+              </md-field>
+              <div class="div__toolbar_right">
+                <md-field>
+                  <md-input
+                    type="search"
+                    class="mb-3"
+                    clearable
+                    style="width: 200px"
+                    placeholder="Поиск пользователя"
+                    v-model="searchQuery"
+                  >
+                  </md-input>
+                </md-field>
 
+                <md-button
+                  style="width: 230px; height: 41px; margin-right: 15px"
+                  class="md-success button__add_user"
+                  @click="showUserAdd()"
+                >
+                  <span class="material-icons"> person_add </span>
+                  Добавить пользователя
+                </md-button>
+              </div>
+            </md-table-toolbar>
             <md-table-row slot="md-table-row" slot-scope="{ item }">
               <md-table-cell md-label="Данные">
                 <pattern-user-table-list-item
@@ -66,6 +99,25 @@
               </md-table-cell>
             </md-table-row>
           </md-table>
+          <div class="footer-table md-table">
+            <table>
+              <tfoot>
+                <tr>
+                  <th
+                    v-for="item in footerTable"
+                    :key="item.name"
+                    class="md-table-head"
+                  >
+                    <div class="md-table-head-container md-ripple md-disabled">
+                      <div class="md-table-head-label">
+                        {{ item }}
+                      </div>
+                    </div>
+                  </th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
         </md-card-content>
       </md-card>
 
@@ -179,6 +231,46 @@
         </md-card-actions>
       </md-card>
     </div>
+
+    <md-dialog :md-active.sync="showDialogUserAdd">
+      <md-dialog-title>Добавление пользователя</md-dialog-title>
+      <div class="div__my-dialog-content">
+        <md-field>
+          <label>Имя</label>
+          <md-input v-model="name__" type="text"></md-input>
+        </md-field>
+        <md-field>
+          <label>Фамилия</label>
+          <md-input v-model="secondName__" type="text"></md-input>
+        </md-field>
+        <md-field>
+          <label>Должность</label>
+          <md-input v-model="position__" type="text"></md-input>
+        </md-field>
+        <md-field>
+          <label>E-mail</label>
+          <md-input clearable v-model="email__" type="text"></md-input>
+        </md-field>
+        <md-field>
+          <label>Телефон</label>
+          <md-input v-model="phone__" type="text"></md-input>
+        </md-field>
+        <md-field>
+          <label>Пароль</label>
+          <md-input v-model="password__" type="password"></md-input>
+        </md-field>
+        <md-field>
+          <label>Подтверждение пароль</label>
+          <md-input v-model="passwordConfirm__" type="password"></md-input>
+        </md-field>
+      </div>
+      <md-dialog-actions>
+        <md-button class="md-info" @click="hideUserAdd()"
+          >Добавить пользователя</md-button
+        >
+        <md-button class="md-primary" @click="hideUserAdd()">Закрыть</md-button>
+      </md-dialog-actions>
+    </md-dialog>
   </div>
 </template>
 
@@ -230,6 +322,14 @@ export default {
   data() {
     return {
       showConfirmUserDelete: false,
+      showDialogUserAdd: false,
+      name__: "",
+      secondName__: "",
+      email__: "",
+      phone__: "",
+      position__: "",
+      password__: "123456",
+      passwordConfirm__: "123456",
 
       currentSort: "name",
       currentSortOrder: "asc",
@@ -239,7 +339,7 @@ export default {
         perPageOptions: [5, 10, 25, 50],
         total: 0,
       },
-      footerTable: ["Name", "Email", "Age", "Salary", "Actions"],
+      footerTable: ["Данные", "Статус", "Роли", ""],
       searchQuery: "",
       propsToSearch: ["name", "email", "age"],
       tableData: users,
@@ -249,6 +349,13 @@ export default {
     };
   },
   methods: {
+    showUserAdd() {
+      this.showDialogUserAdd = true;
+    },
+    hideUserAdd() {
+      this.showDialogUserAdd = false;
+    },
+
     customSort(value) {
       return value.sort((a, b) => {
         const sortBy = this.currentSort;
@@ -354,5 +461,22 @@ export default {
 
 .material-icons {
   margin-right: 15px;
+}
+
+.div__toolbar_right {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.button__add_user {
+  margin-left: 15px;
+}
+
+.div__my-dialog-content {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  margin: 15px;
 }
 </style>
