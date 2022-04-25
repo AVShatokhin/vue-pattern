@@ -54,6 +54,7 @@
             <md-table-row slot="md-table-row" slot-scope="{ item }">
               <md-table-cell md-label="Данные">
                 <pattern-user-table-list-item
+                  @userInfoChanged="userInfoChanged"
                   :uid="item.uid"
                   :name="item.extended.name"
                   :secondName="item.extended.secondName"
@@ -65,10 +66,14 @@
               </md-table-cell>
               <md-table-cell md-label="Статус">
                 <pattern-user-table-status
+                  @userBlocked="changeBlocked(item.uid, true)"
+                  @userUnBlocked="changeBlocked(item.uid, false)"
+                  @emailConfirmationSent="changeConfirmed(item.uid, false)"
+                  @emailConfirmedByAdmin="changeConfirmed(item.uid, true)"
                   :uid="item.uid"
                   :confirmed="item.confirmed"
                   :blocked="item.blocked"
-                  :session_count="item.session_count"
+                  :session_count="item.sessions"
                 ></pattern-user-table-status>
               </md-table-cell>
               <md-table-cell md-label="Роли">
@@ -90,10 +95,10 @@
                     md-title="Удалить пользователя?"
                     md-content="Эта опреация приведёт к полному
                   удалению пользователя.<br />Отменить операцию нельзя."
-                    md-confirm-text="ОК"
+                    md-confirm-text="Удалить"
                     md-cancel-text="Отмена"
-                    @md-cancel="alert('1')"
-                    @md-confirm="alert('1')"
+                    @md-cancel="showConfirmUserDelete = false"
+                    @md-confirm="adminDeleteUser(item.uid)"
                   />
                 </md-button>
               </md-table-cell>
@@ -121,7 +126,7 @@
         </md-card-content>
       </md-card>
 
-      <md-card>
+      <!-- <md-card>
         <md-card-header class="md-card-header-icon md-card-header-green">
           <div class="card-icon">
             <md-icon>supervisor_account</md-icon>
@@ -229,7 +234,7 @@
           >
           </pagination>
         </md-card-actions>
-      </md-card>
+      </md-card> -->
     </div>
 
     <md-dialog :md-active.sync="showDialogUserAdd">
@@ -265,17 +270,17 @@
         </md-field>
       </div>
       <md-dialog-actions>
-        <md-button class="md-info" @click="hideUserAdd()"
+        <md-button class="md-default" @click="hideUserAdd()">Закрыть</md-button>
+        <md-button class="md-primary" @click="adminAddUser()"
           >Добавить пользователя</md-button
         >
-        <md-button class="md-primary" @click="hideUserAdd()">Закрыть</md-button>
       </md-dialog-actions>
     </md-dialog>
   </div>
 </template>
 
 <script>
-import { Pagination } from "@/components";
+// import { Pagination } from "@/components";
 import users from "./users";
 import Fuse from "fuse.js";
 import Swal from "sweetalert2";
@@ -287,7 +292,7 @@ import PatternUserTableRoles from "../components/cards/PatternUserTableRoles.vue
 
 export default {
   components: {
-    Pagination,
+    // Pagination,
     PatternUserTableListItem,
     PatternUserTableStatus,
     PatternUserTableRoles,
@@ -330,7 +335,10 @@ export default {
       position__: "",
       password__: "123456",
       passwordConfirm__: "123456",
+      usersModel: {},
+      myModel: [],
 
+      // ниже не моё
       currentSort: "name",
       currentSortOrder: "asc",
       pagination: {
@@ -345,17 +353,132 @@ export default {
       tableData: users,
       searchedData: [],
       fuseSearch: null,
-      myModel: [],
     };
   },
   methods: {
+    recomputeModel() {
+      let __temp = [];
+      for (let uid in this.usersModel) {
+        __temp.push(this.usersModel[uid]);
+      }
+      return __temp;
+    },
+
+    showErrorNotify(r) {
+      this.$notify({
+        message: `<h3>${r.errorCode}</h3>` + `<p>${r.errorMessage}</p>`,
+        icon: "add_alert",
+        horizontalAlign: "center",
+        verticalAlign: "top",
+        type: "warning",
+      });
+    },
+    showSuccessNotify(r) {
+      this.$notify({
+        message: `<h3>${r.title}</h3>` + `<p>${r.message}</p>`,
+        icon: "add_alert",
+        horizontalAlign: "center",
+        verticalAlign: "top",
+        type: "success",
+      });
+    },
     showUserAdd() {
       this.showDialogUserAdd = true;
     },
     hideUserAdd() {
       this.showDialogUserAdd = false;
     },
+    adminAddUser() {
+      if (this.password__ != this.passwordConfirm__) {
+        this.showErrorNotify({
+          errorCode: "PASSWORD_ERROR",
+          errorMessage: "Пароли не совпадают",
+        });
+        return;
+      }
+      this.hideUserAdd();
 
+      this.ajax.adminAddUser(
+        this,
+        {
+          email: this.email__,
+          password: this.password__,
+          extended: {
+            name: this.name__,
+            secondName: this.secondName__,
+            phone: this.phone__,
+            position: this.position__,
+          },
+        },
+        (r) => {
+          if (r.status == "ok") {
+            this.loadUsers();
+            this.showSuccessNotify({
+              title: "OK",
+              message: "Пользователь добавлен",
+            });
+          } else {
+            this.showErrorNotify(r);
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+    loadUsers() {
+      this.ajax.getUsers(
+        this,
+        {},
+        (r) => {
+          if (r.status == "ok") {
+            this.usersModel = r.data;
+            this.myModel = this.recomputeModel();
+          } else {
+            this.showErrorNotify(r);
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+    adminDeleteUser(uid) {
+      this.ajax.adminDeleteUser(
+        this,
+        { uid },
+        (r) => {
+          if (r.status == "ok") {
+            delete this.usersModel[uid];
+            this.myModel = this.recomputeModel();
+            this.showSuccessNotify({
+              title: "OK",
+              message: "Пользователь удалён!",
+            });
+          } else if (r.status == "failed") {
+            this.showErrorNotify(r);
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    },
+    userInfoChanged(data) {
+      this.usersModel[data.uid].extended = data.extended;
+      this.usersModel[data.uid].email = data.email;
+      this.myModel = this.recomputeModel();
+    },
+    changeBlocked(uid, state) {
+      this.usersModel[uid].blocked = state;
+      this.myModel = this.recomputeModel();
+    },
+    changeConfirmed(uid, state) {
+      this.usersModel[uid].confirmed = state;
+      this.myModel = this.recomputeModel();
+    },
+
+    // не моё
     customSort(value) {
       return value.sort((a, b) => {
         const sortBy = this.currentSort;
@@ -419,22 +542,11 @@ export default {
       threshold: 0.3,
     });
 
-    this.ajax.getUsers(
-      this,
-      {},
-      (r) => {
-        r.data.forEach((element) => {
-          element.extended = JSON.parse(element.extended);
-          element.roles = JSON.parse(element.roles);
-        });
-        // console.log(r);
-        this.myModel = r.data;
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
+    // выше не моё
+    this.loadUsers();
   },
+
+  // ниже не моё
   watch: {
     /**
      * Searches through the table data by a given query.
@@ -449,6 +561,7 @@ export default {
       this.searchedData = result;
     },
   },
+  computed: {},
 };
 </script>
 

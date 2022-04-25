@@ -2,24 +2,24 @@
   <div class="md-layout" style="justify-content: left">
     <div v-if="confirmed_" class="md-layout-item md-size-100">
       <badge type="success">E-mail подтверждён</badge>
-      <div v-if="blocked_">
-        <badge type="warning">Аккаунт заблокирован</badge>
-      </div>
-      <div v-if="!blocked_">
-        <badge type="success">Аккаунт активен</badge>
-      </div>
-      <div class="my-row">
-        <div>Количество сеансов:</div>
-        <div style="padding-left: 10px">
-          <b>{{ session_count }}</b>
-        </div>
+    </div>
+    <div v-if="!confirmed_" class="md-layout-item md-size-100">
+      <badge type="warning">E-mail не подтверждён</badge>
+    </div>
+    <div v-if="blocked_" class="md-layout-item md-size-100">
+      <badge type="warning">Аккаунт заблокирован</badge>
+    </div>
+    <div v-if="!blocked_" class="md-layout-item md-size-100">
+      <badge type="success">Аккаунт не заблокирован</badge>
+    </div>
+
+    <div class="my-row md-layout-item md-size-100">
+      <div>Количество сеансов:</div>
+      <div style="padding-left: 10px">
+        <b>{{ session_count }}</b>
       </div>
     </div>
-    <div v-if="!confirmed_">
-      <badge style="margin-bottom: 15px" type="warning"
-        >E-mail не подтверждён</badge
-      >
-    </div>
+
     <md-button
       @click.native="changeAcount()"
       class="md-info"
@@ -36,8 +36,8 @@
         <md-button
           class="md-info"
           @click="
-            newPassword = '';
-            newPasswordConfirm = '';
+            newPassword = '123456';
+            newPasswordConfirm = '123456';
             showDialogChangePassword = true;
             showDialog = false;
           "
@@ -77,13 +77,10 @@
             md-content="Эта операция приведёт к блокировке пользователя.<br>
             Для подтверждения почтового ящика пользователю будет выслана ссылка, по которой ему потребуется перейти.<br>
             Пока он не подтвердит свой почтовый ящик, он не сможет авторизоваться в системе."
-            md-confirm-text="ОК"
+            md-confirm-text="Выполнить операцию"
             md-cancel-text="Отмена"
             @md-cancel="showDialog = false"
-            @md-confirm="
-              showDialog = false;
-              confirmed_ = false;
-            "
+            @md-confirm="adminRequestConfirmation()"
           />
         </md-button>
 
@@ -99,13 +96,10 @@
             :md-active.sync="showConfirmManualEmailConfirm"
             md-title="Подтвердить e-mail вручную?"
             md-content="Эта операция приведёт тому, что пользователь, не подтвердивший свой адрес электронной почты, сможет иметь доступ к системе."
-            md-confirm-text="ОК"
+            md-confirm-text="Выполнить операцию"
             md-cancel-text="Отмена"
             @md-cancel="showDialog = false"
-            @md-confirm="
-              showDialog = false;
-              confirmed_ = true;
-            "
+            @md-confirm="adminConfirmEmail()"
           />
         </md-button>
 
@@ -120,13 +114,10 @@
             :md-active.sync="showConfirmBlock"
             md-title="Заблокировать аккаунт?"
             md-content="Эта операция приведёт к тому, что все сеансы пользователя будут закрыты и пользователь не сможет авторизоваться в системе."
-            md-confirm-text="ОК"
-            md-cancel-text="Отмена"
+            md-confirm-text="Выполнить операцию"
+            md-cancel-text="Закрыть"
             @md-cancel="showDialog = false"
-            @md-confirm="
-              showDialog = false;
-              blocked_ = true;
-            "
+            @md-confirm="adminBlockUser()"
           />
         </md-button>
 
@@ -142,19 +133,16 @@
             :md-active.sync="showConfirmUnBlock"
             md-title="Разблокировать аккаунт?"
             md-content="Эта операция приведёт к тому, что пользователь вновь сможет авторизовываться и работать в системе."
-            md-confirm-text="ОК"
-            md-cancel-text="Отмена"
+            md-confirm-text="Выполнить операцию"
+            md-cancel-text="Закрыть"
             @md-cancel="showDialog = false"
-            @md-confirm="
-              showDialog = false;
-              blocked_ = false;
-            "
+            @md-confirm="adminUnBlockUser()"
           />
         </md-button>
       </div>
 
       <md-dialog-actions>
-        <md-button class="md-primary" @click="showDialog = false"
+        <md-button class="md-default" @click="showDialog = false"
           >Закрыть</md-button
         >
       </md-dialog-actions>
@@ -177,11 +165,11 @@
         </md-field>
       </div>
       <md-dialog-actions>
-        <md-button class="md-info" @click="showDialogChangePassword = false"
-          >Установить новый пароль</md-button
-        >
-        <md-button class="md-primary" @click="showDialogChangePassword = false"
+        <md-button class="md-default" @click="showDialogChangePassword = false"
           >Закрыть</md-button
+        >
+        <md-button class="md-primary" @click="adminUpdateUserPassword()"
+          >Установить новый пароль</md-button
         >
       </md-dialog-actions>
     </md-dialog>
@@ -230,8 +218,145 @@ export default {
     };
   },
   methods: {
+    showErrorNotify(r) {
+      this.$notify({
+        message: `<h3>${r.errorCode}</h3>` + `<p>${r.errorMessage}</p>`,
+        icon: "add_alert",
+        horizontalAlign: "center",
+        verticalAlign: "top",
+        type: "warning",
+      });
+    },
+    showSuccessNotify(r) {
+      this.$notify({
+        message: `<h3>${r.title}</h3>` + `<p>${r.message}</p>`,
+        icon: "add_alert",
+        horizontalAlign: "center",
+        verticalAlign: "top",
+        type: "success",
+      });
+    },
     changeAcount() {
       this.showDialog = true;
+    },
+    adminUpdateUserPassword() {
+      if (this.newPasswordConfirm != this.newPassword) {
+        this.showErrorNotify({
+          errorCode: "Ошибка!",
+          errorMessage: "Пароли не совпадают",
+        });
+        return;
+      }
+      this.showDialogChangePassword = false;
+
+      this.ajax.adminUpdateUserPassword(
+        this,
+        {
+          password: this.newPassword,
+          uid: this.uid,
+        },
+        (r) => {
+          if (r.status == "ok") {
+            this.showSuccessNotify({ title: "ОК", message: "Пароль изменён!" });
+          } else if (r.status == "failed") {
+            this.showErrorNotify(r);
+          }
+        },
+        (err) => {}
+      );
+    },
+    adminConfirmEmail() {
+      this.showDialog = false;
+
+      this.ajax.adminConfirmEmail(
+        this,
+        {
+          uid: this.uid,
+        },
+        (r) => {
+          if (r.status == "ok") {
+            this.confirmed_ = true;
+            this.$emit("emailConfirmedByAdmin");
+            this.showSuccessNotify({
+              title: "ОК",
+              message: "Адрес электронной почты подтверждён!",
+            });
+          } else if (r.status == "failed") {
+            this.showErrorNotify(r);
+          }
+        },
+        (err) => {}
+      );
+    },
+    adminRequestConfirmation() {
+      this.showDialog = false;
+
+      this.ajax.adminRequestConfirmation(
+        this,
+        {
+          uid: this.uid,
+        },
+        (r) => {
+          if (r.status == "ok") {
+            this.confirmed_ = false;
+            this.$emit("emailConfirmationSent");
+            this.showSuccessNotify({
+              title: "ОК",
+              message:
+                "Отправлен запрос подтверждения адреса электронной почты!",
+            });
+          } else if (r.status == "failed") {
+            this.showErrorNotify(r);
+          }
+        },
+        (err) => {}
+      );
+    },
+    adminBlockUser() {
+      this.showDialog = false;
+
+      this.ajax.adminBlockUser(
+        this,
+        {
+          uid: this.uid,
+        },
+        (r) => {
+          if (r.status == "ok") {
+            this.blocked_ = true;
+            this.$emit("userBlocked");
+            this.showSuccessNotify({
+              title: "ОК",
+              message: "Пользователь заблокирован!",
+            });
+          } else if (r.status == "failed") {
+            this.showErrorNotify(r);
+          }
+        },
+        (err) => {}
+      );
+    },
+    adminUnBlockUser() {
+      this.showDialog = false;
+
+      this.ajax.adminUnBlockUser(
+        this,
+        {
+          uid: this.uid,
+        },
+        (r) => {
+          if (r.status == "ok") {
+            this.blocked_ = false;
+            this.$emit("userUnBlocked");
+            this.showSuccessNotify({
+              title: "ОК",
+              message: "Пользователь разблокирован!",
+            });
+          } else if (r.status == "failed") {
+            this.showErrorNotify(r);
+          }
+        },
+        (err) => {}
+      );
     },
   },
   mounted() {

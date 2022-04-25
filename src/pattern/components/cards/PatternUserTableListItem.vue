@@ -96,11 +96,11 @@
         </md-field>
       </div>
       <md-dialog-actions>
-        <md-button class="md-info" @click="showDialog = false"
-          >Принять изменения</md-button
-        >
-        <md-button class="md-primary" @click="showDialog = false"
+        <md-button class="md-default" @click="showDialog = false"
           >Закрыть</md-button
+        >
+        <md-button class="md-primary" @click="submitChanges()"
+          >Принять изменения</md-button
         >
       </md-dialog-actions>
     </md-dialog>
@@ -153,6 +153,24 @@ export default {
     };
   },
   methods: {
+    showErrorNotify(r) {
+      this.$notify({
+        message: `<h3>${r.errorCode}</h3>` + `<p>${r.errorMessage}</p>`,
+        icon: "add_alert",
+        horizontalAlign: "center",
+        verticalAlign: "top",
+        type: "warning",
+      });
+    },
+    showSuccessNotify(r) {
+      this.$notify({
+        message: `<h3>${r.title}</h3>` + `<p>${r.message}</p>`,
+        icon: "add_alert",
+        horizontalAlign: "center",
+        verticalAlign: "top",
+        type: "success",
+      });
+    },
     editData() {
       this.email__ = this.email_;
       this.postion__ = this.position_;
@@ -161,6 +179,43 @@ export default {
       this.position__ = this.position_;
       this.phone__ = this.phone_;
       this.showDialog = true;
+    },
+    submitChanges() {
+      let data = {
+        uid: this.uid,
+        email: this.email__,
+        extended: {
+          name: this.name__,
+          position: this.position__,
+          phone: this.phone__,
+          secondName: this.secondName__,
+        },
+      };
+
+      this.ajax.adminUpdateUserInfo(
+        this,
+        data,
+        (r) => {
+          if (r.status == "ok") {
+            this.showSuccessNotify({
+              title: "OK",
+              message: "Изменены данные пользователя",
+            });
+            this.email_ = this.email__;
+            this.postion_ = this.position__;
+            this.name_ = this.name__;
+            this.secondName_ = this.secondName__;
+            this.position_ = this.position__;
+            this.phone_ = this.phone__;
+
+            this.$emit("userInfoChanged", data);
+            this.showDialog = false;
+          } else if (r.status == "failed") {
+            this.showErrorNotify(r);
+          }
+        },
+        (err) => {}
+      );
     },
   },
   mounted() {

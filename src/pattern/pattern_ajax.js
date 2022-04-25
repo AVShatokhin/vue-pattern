@@ -220,10 +220,178 @@ let pattern_ajax = {
     data.token = token;
     component
       .axios({
-        method: "GET",
+        method: "GET", // важное замечание: когда отправляем GET, то параметры в поле params, когда POST, то данные в поле data
         timeout: 15000,
-        url: `${api_url}get_users/`,
-        data,
+        url: `${api_url}admin_get_users/`,
+        params: data, // вот здесь или params или data
+      })
+      .then((response) => {
+        when_CB(response.data);
+      })
+      .catch((error) => {
+        if (error) {
+          let errorObject = error.toJSON();
+          defaultCatch_CB(component, errorObject);
+          catch_CB(errorObject);
+        }
+      });
+  },
+  adminAddUser: (component, data, when_CB, catch_CB) => {
+    let token = JSON.parse(localStorage.getItem("userData"))?.token;
+    data.token = token;
+    component
+      .axios({
+        method: "POST", // важное замечание: когда отправляем GET, то параметры в поле params, когда POST, то данные в поле data
+        timeout: 15000,
+        url: `${api_url}admin_add_user/`,
+        data, // вот здесь или params или data
+      })
+      .then((response) => {
+        when_CB(response.data);
+      })
+      .catch((error) => {
+        if (error) {
+          let errorObject = error.toJSON();
+          defaultCatch_CB(component, errorObject);
+          catch_CB(errorObject);
+        }
+      });
+  },
+  adminUpdateUserInfo: (component, data, when_CB, catch_CB) => {
+    let token = JSON.parse(localStorage.getItem("userData"))?.token;
+    data.token = token;
+    component
+      .axios({
+        method: "POST", // важное замечание: когда отправляем GET, то параметры в поле params, когда POST, то данные в поле data
+        timeout: 15000,
+        url: `${api_url}admin_update_user_info/`,
+        data, // вот здесь или params или data
+      })
+      .then((response) => {
+        when_CB(response.data);
+      })
+      .catch((error) => {
+        if (error) {
+          let errorObject = error.toJSON();
+          defaultCatch_CB(component, errorObject);
+          catch_CB(errorObject);
+        }
+      });
+  },
+  adminDeleteUser: (component, data, when_CB, catch_CB) => {
+    let token = JSON.parse(localStorage.getItem("userData"))?.token;
+    data.token = token;
+    component
+      .axios({
+        method: "POST", // важное замечание: когда отправляем GET, то параметры в поле params, когда POST, то данные в поле data
+        timeout: 15000,
+        url: `${api_url}admin_delete_user/`,
+        data, // вот здесь или params или data
+      })
+      .then((response) => {
+        when_CB(response.data);
+      })
+      .catch((error) => {
+        if (error) {
+          let errorObject = error.toJSON();
+          defaultCatch_CB(component, errorObject);
+          catch_CB(errorObject);
+        }
+      });
+  },
+  adminUpdateUserPassword: (component, data, when_CB, catch_CB) => {
+    let token = JSON.parse(localStorage.getItem("userData"))?.token;
+    data.token = token;
+    component
+      .axios({
+        method: "POST", // важное замечание: когда отправляем GET, то параметры в поле params, когда POST, то данные в поле data
+        timeout: 15000,
+        url: `${api_url}admin_update_user_password/`,
+        data, // вот здесь или params или data
+      })
+      .then((response) => {
+        when_CB(response.data);
+      })
+      .catch((error) => {
+        if (error) {
+          let errorObject = error.toJSON();
+          defaultCatch_CB(component, errorObject);
+          catch_CB(errorObject);
+        }
+      });
+  },
+  adminConfirmEmail: (component, data, when_CB, catch_CB) => {
+    let token = JSON.parse(localStorage.getItem("userData"))?.token;
+    data.token = token;
+    component
+      .axios({
+        method: "POST", // важное замечание: когда отправляем GET, то параметры в поле params, когда POST, то данные в поле data
+        timeout: 15000,
+        url: `${api_url}admin_confirm_email/`,
+        data, // вот здесь или params или data
+      })
+      .then((response) => {
+        when_CB(response.data);
+      })
+      .catch((error) => {
+        if (error) {
+          let errorObject = error.toJSON();
+          defaultCatch_CB(component, errorObject);
+          catch_CB(errorObject);
+        }
+      });
+  },
+  adminRequestConfirmation: (component, data, when_CB, catch_CB) => {
+    let token = JSON.parse(localStorage.getItem("userData"))?.token;
+    data.token = token;
+    component
+      .axios({
+        method: "POST", // важное замечание: когда отправляем GET, то параметры в поле params, когда POST, то данные в поле data
+        timeout: 15000,
+        url: `${api_url}admin_request_confirmation/`,
+        data, // вот здесь или params или data
+      })
+      .then((response) => {
+        when_CB(response.data);
+      })
+      .catch((error) => {
+        if (error) {
+          let errorObject = error.toJSON();
+          defaultCatch_CB(component, errorObject);
+          catch_CB(errorObject);
+        }
+      });
+  },
+  adminBlockUser: (component, data, when_CB, catch_CB) => {
+    let token = JSON.parse(localStorage.getItem("userData"))?.token;
+    data.token = token;
+    component
+      .axios({
+        method: "POST", // важное замечание: когда отправляем GET, то параметры в поле params, когда POST, то данные в поле data
+        timeout: 15000,
+        url: `${api_url}admin_block_user/`,
+        data, // вот здесь или params или data
+      })
+      .then((response) => {
+        when_CB(response.data);
+      })
+      .catch((error) => {
+        if (error) {
+          let errorObject = error.toJSON();
+          defaultCatch_CB(component, errorObject);
+          catch_CB(errorObject);
+        }
+      });
+  },
+  adminUnBlockUser: (component, data, when_CB, catch_CB) => {
+    let token = JSON.parse(localStorage.getItem("userData"))?.token;
+    data.token = token;
+    component
+      .axios({
+        method: "POST", // важное замечание: когда отправляем GET, то параметры в поле params, когда POST, то данные в поле data
+        timeout: 15000,
+        url: `${api_url}admin_unblock_user/`,
+        data, // вот здесь или params или data
       })
       .then((response) => {
         when_CB(response.data);
