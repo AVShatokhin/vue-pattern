@@ -29,11 +29,11 @@
           >
         </div>
         <md-dialog-actions>
-          <md-button class="md-info" @click="showDialog = false"
-            >Принять изменения</md-button
-          >
-          <md-button class="md-primary" @click="showDialog = false"
+          <md-button class="md-default" @click="showDialog = false"
             >Закрыть</md-button
+          >
+          <md-button class="md-primary" @click="applyNewRoles"
+            >Принять изменения</md-button
           >
         </md-dialog-actions>
       </md-dialog>
@@ -70,7 +70,51 @@ export default {
       patternRoles: pattern_roles,
     };
   },
-  methods: {},
+  methods: {
+    showErrorNotify(r) {
+      this.$notify({
+        message: `<h3>${r.errorCode}</h3>` + `<p>${r.errorMessage}</p>`,
+        icon: "add_alert",
+        horizontalAlign: "center",
+        verticalAlign: "top",
+        type: "warning",
+      });
+    },
+    showSuccessNotify(r) {
+      this.$notify({
+        message: `<h3>${r.title}</h3>` + `<p>${r.message}</p>`,
+        icon: "add_alert",
+        horizontalAlign: "center",
+        verticalAlign: "top",
+        type: "success",
+      });
+    },
+
+    applyNewRoles() {
+      this.showDialog = false;
+      this.ajax.applyNewRoles(
+        this,
+        { roles: this.rolesDialog, uid: this.uid },
+        (r) => {
+          if (r.status == "ok") {
+            this.showSuccessNotify({
+              title: "ОК",
+              message:
+                "Новые роли пользователя применены! Вступят в действие при его последующей авторизации.",
+            });
+            this.roles_ = this.rolesDialog;
+            this.$emit("applyNewRoles", {
+              roles: this.rolesDialog,
+              uid: this.uid,
+            });
+          } else {
+            this.showErrorNotify(r);
+          }
+        },
+        (err) => {}
+      );
+    },
+  },
   mounted() {
     // console.log(this.patternRolesArray);
     this.rolesDialog = Array.from(this.roles);

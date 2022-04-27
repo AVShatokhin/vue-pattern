@@ -116,7 +116,6 @@ export default {
     let userData = localStorage.getItem("userData");
     if (userData) {
       this.isSending = true;
-      console.log(this);
       this.ajax.checkToken(
         this,
         { token: JSON.parse(userData).token },

@@ -404,6 +404,69 @@ let pattern_ajax = {
         }
       });
   },
+  adminCloseAllSessionsByUID: (component, data, when_CB, catch_CB) => {
+    let token = JSON.parse(localStorage.getItem("userData"))?.token;
+    data.token = token;
+    component
+      .axios({
+        method: "POST", // важное замечание: когда отправляем GET, то параметры в поле params, когда POST, то данные в поле data
+        timeout: 15000,
+        url: `${api_url}admin_close_all_sessions/`,
+        data, // вот здесь или params или data
+      })
+      .then((response) => {
+        when_CB(response.data);
+      })
+      .catch((error) => {
+        if (error) {
+          let errorObject = error.toJSON();
+          defaultCatch_CB(component, errorObject);
+          catch_CB(errorObject);
+        }
+      });
+  },
+  useAccount: (component, data, when_CB, catch_CB) => {
+    let token = JSON.parse(localStorage.getItem("userData"))?.token;
+    data.token = token;
+    component
+      .axios({
+        method: "POST", // важное замечание: когда отправляем GET, то параметры в поле params, когда POST, то данные в поле data
+        timeout: 15000,
+        url: `${api_url}admin_use_account/`,
+        data, // вот здесь или params или data
+      })
+      .then((response) => {
+        when_CB(response.data);
+      })
+      .catch((error) => {
+        if (error) {
+          let errorObject = error.toJSON();
+          defaultCatch_CB(component, errorObject);
+          catch_CB(errorObject);
+        }
+      });
+  },
+  applyNewRoles: (component, data, when_CB, catch_CB) => {
+    let token = JSON.parse(localStorage.getItem("userData"))?.token;
+    data.token = token;
+    component
+      .axios({
+        method: "POST", // важное замечание: когда отправляем GET, то параметры в поле params, когда POST, то данные в поле data
+        timeout: 15000,
+        url: `${api_url}admin_apply_new_roles/`,
+        data, // вот здесь или params или data
+      })
+      .then((response) => {
+        when_CB(response.data);
+      })
+      .catch((error) => {
+        if (error) {
+          let errorObject = error.toJSON();
+          defaultCatch_CB(component, errorObject);
+          catch_CB(errorObject);
+        }
+      });
+  },
 };
 
 for (let method in app) {

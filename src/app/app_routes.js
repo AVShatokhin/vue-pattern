@@ -1,10 +1,10 @@
 /* eslint-disable */
-import Register from "@/pattern/pages/PatternRegister.vue";
+import test from "@/app/pages/test.vue";
 
 export default [
   {
-    path: "/dispetcher",
-    component: Register,
-    name: "Диспетчер",
+    path: "/test",
+    component: test,
+    name: "Тест",
   },
 ];

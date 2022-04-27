@@ -14,7 +14,17 @@
         </div>
       </div>
       <div>
-        <b>{{ secondName_ + " " + name_ }}</b>
+        <b>
+          <span v-for="(n, i) in secondNameText" :key="n">
+            <mark v-if="i % 2">{{ n }}</mark>
+            <span v-else>{{ n }}</span>
+          </span>
+          {{ " " }}
+          <span v-for="(n, i) in nameText" :key="i">
+            <mark v-if="i % 2">{{ n }}</mark>
+            <span v-else>{{ n }}</span>
+          </span>
+        </b>
       </div>
     </div>
 
@@ -32,7 +42,12 @@
         </div>
       </div>
       <div>
-        <b>{{ email_ }}</b>
+        <b>
+          <span v-for="(n, i) in emailText" :key="i">
+            <mark v-if="i % 2">{{ n }}</mark>
+            <span v-else>{{ n }}</span>
+          </span>
+        </b>
       </div>
     </div>
 
@@ -50,7 +65,12 @@
         </div>
       </div>
       <div>
-        <b>{{ position_ }}</b>
+        <b>
+          <span v-for="(n, i) in positionText" :key="i">
+            <mark v-if="i % 2">{{ n }}</mark>
+            <span v-else>{{ n }}</span>
+          </span>
+        </b>
       </div>
     </div>
 
@@ -68,9 +88,15 @@
         </div>
       </div>
       <div>
-        <b>{{ phone_ }}</b>
+        <b>
+          <span v-for="(n, i) in phoneText" :key="i">
+            <mark v-if="i % 2">{{ n }}</mark>
+            <span v-else>{{ n }}</span>
+          </span>
+        </b>
       </div>
     </div>
+
     <md-dialog :md-active.sync="showDialog">
       <md-dialog-title>Изменение данных пользователя</md-dialog-title>
       <div class="my-dialog-content">
@@ -134,6 +160,10 @@ export default {
     phone: {
       type: String,
       default: null,
+    },
+    searchQuery: {
+      type: String,
+      default: "",
     },
   },
   data() {
@@ -217,6 +247,13 @@ export default {
         (err) => {}
       );
     },
+    highlightedTextArrays(text, search) {
+      return search
+        ? text.split(
+            RegExp(`(${search.replace(/[\\^$|.*?+{}()[\]]/g, "\\$&")})`, "gi")
+          )
+        : [text];
+    },
   },
   mounted() {
     this.email_ = this.email;
@@ -227,7 +264,23 @@ export default {
     this.phone_ = this.phone;
   },
   watch: {},
-  computed: {},
+  computed: {
+    emailText() {
+      return this.highlightedTextArrays(this.email, this.searchQuery);
+    },
+    phoneText() {
+      return this.highlightedTextArrays(this.phone, this.searchQuery);
+    },
+    positionText() {
+      return this.highlightedTextArrays(this.position, this.searchQuery);
+    },
+    nameText() {
+      return this.highlightedTextArrays(this.name, this.searchQuery);
+    },
+    secondNameText() {
+      return this.highlightedTextArrays(this.secondName, this.searchQuery);
+    },
+  },
 };
 </script>
 
@@ -279,5 +332,13 @@ export default {
   flex-direction: column;
   padding: 15px;
   margin: 15px;
+}
+
+.span__no_mark {
+  color: red;
+  /* margin-left: 0px;
+  margin-right: 0px;
+  padding-left: 0px;
+  padding-right: 0px; */
 }
 </style>

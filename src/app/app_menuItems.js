@@ -2,9 +2,9 @@
 
 export default [
   {
-    name: "Диспетчер",
+    name: "ТестТест",
     icon: "dashboard",
-    path: "/dispetcher",
+    path: "/test",
     roles: ["default"],
   },
 ];

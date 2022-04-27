@@ -13,13 +13,18 @@
       <badge type="success">Аккаунт не заблокирован</badge>
     </div>
 
-    <div class="my-row md-layout-item md-size-100">
+    <div class="my-row-first md-layout-item md-size-100">
       <div>Количество сеансов:</div>
       <div style="padding-left: 10px">
         <b>{{ session_count }}</b>
       </div>
     </div>
-
+    <div class="my-row-last md-layout-item md-size-100">
+      <div>UID:</div>
+      <div style="padding-left: 10px">
+        <b>{{ uid }}</b>
+      </div>
+    </div>
     <md-button
       @click.native="changeAcount()"
       class="md-info"
@@ -57,10 +62,10 @@
             :md-active.sync="showConfirmCloseAllSessions"
             md-title="Закрыть все сеансы пользователя?"
             md-content="Эта опреация не приводит к блокировке пользователя.<br>После закрытия всех сеансов пользователя, ему потребуется заново авторизоваться."
-            md-confirm-text="ОК"
+            md-confirm-text="Выполнить операцию"
             md-cancel-text="Отмена"
             @md-cancel="showDialog = false"
-            @md-confirm="showDialog = false"
+            @md-confirm="adminCloseAllSessionsByUID"
           />
         </md-button>
 
@@ -74,9 +79,9 @@
           <md-dialog-confirm
             :md-active.sync="showConfirmSendEmailConfirmRequest"
             md-title="Запросить подтверждение e-mail?"
-            md-content="Эта операция приведёт к блокировке пользователя.<br>
-            Для подтверждения почтового ящика пользователю будет выслана ссылка, по которой ему потребуется перейти.<br>
-            Пока он не подтвердит свой почтовый ящик, он не сможет авторизоваться в системе."
+            md-content="Для подтверждения почтового ящика пользователю будет выслана ссылка, по которой ему потребуется перейти.<br>
+            Эта операция не приведёт блокировке пользователя. Если у него открыт сеанс, то сеанс продолжится до выхода из системы.<br>
+            Но пока он не подтвердит свой почтовый ящик, он не сможет авторизоваться в системе снова."
             md-confirm-text="Выполнить операцию"
             md-cancel-text="Отмена"
             @md-cancel="showDialog = false"
@@ -137,6 +142,25 @@
             md-cancel-text="Закрыть"
             @md-cancel="showDialog = false"
             @md-confirm="adminUnBlockUser()"
+          />
+        </md-button>
+
+        <!-- Использовать аккаунт -->
+        <md-button
+          v-if="!blocked_"
+          class="md-info"
+          @click="showConfirmUnBlock = true"
+        >
+          <span class="material-icons"> account_circle </span>
+          Использовать аккаунт
+          <md-dialog-confirm
+            :md-active.sync="showConfirmUnBlock"
+            md-title="Использовать этот аккаунт?"
+            md-content="Эта операция приведёт к тому, что текущий пользователь утеряет авторизацию и зайдёт в систему с правами данного пользователя."
+            md-confirm-text="Выполнить операцию"
+            md-cancel-text="Закрыть"
+            @md-cancel="showDialog = false"
+            @md-confirm="adminUseAccount()"
           />
         </md-button>
       </div>
@@ -315,6 +339,8 @@ export default {
     adminBlockUser() {
       this.showDialog = false;
 
+      this.adminCloseAllSessionsByUID();
+
       this.ajax.adminBlockUser(
         this,
         {
@@ -358,6 +384,50 @@ export default {
         (err) => {}
       );
     },
+    adminCloseAllSessionsByUID() {
+      this.showDialog = false;
+
+      this.ajax.adminCloseAllSessionsByUID(
+        this,
+        {
+          uid: this.uid,
+        },
+        (r) => {
+          if (r.status == "ok") {
+            this.$emit("newSessionsCount", {
+              sessionsCount: r.sessionsCount,
+              uid: this.uid,
+            });
+            this.showSuccessNotify({
+              title: "ОК",
+              message: "Сеансы закрыты!",
+            });
+          } else if (r.status == "failed") {
+            this.showErrorNotify(r);
+          }
+        },
+        (err) => {}
+      );
+    },
+    adminUseAccount() {
+      this.ajax.useAccount(
+        this,
+        {
+          changeToUID: this.uid,
+        },
+        (r) => {
+          if (r.status == "ok") {
+            localStorage.removeItem("userData");
+            let userData = { token: r.token };
+            localStorage.setItem("userData", JSON.stringify(userData));
+            this.$router.push("/login");
+          } else {
+            this.showErrorNotify(r);
+          }
+        },
+        () => {}
+      );
+    },
   },
   mounted() {
     this.blocked_ = this.blocked;
@@ -369,10 +439,16 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.my-row {
+.my-row-first {
   display: flex;
   flex-direction: row;
   padding-top: 15px;
+  padding-bottom: 5px;
+}
+.my-row-last {
+  display: flex;
+  flex-direction: row;
+  padding-top: 5px;
   padding-bottom: 15px;
 }
 
