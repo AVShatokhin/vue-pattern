@@ -324,7 +324,7 @@ export default {
           }
         },
         (err) => {
-          console.log(err);
+          //console.log(err);
         }
       );
     },
@@ -346,7 +346,7 @@ export default {
           }
         },
         (err) => {
-          console.log(err);
+          //console.log(err);
         }
       );
     },
@@ -366,7 +366,7 @@ export default {
           }
         },
         (err) => {
-          console.log(err);
+          //console.log(err);
         }
       );
     },
