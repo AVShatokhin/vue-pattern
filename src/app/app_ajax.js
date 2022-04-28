@@ -1,5 +1,7 @@
 /* eslint-disable */
-let api_url = "http://127.0.0.1:3000/api/";
+
+//let api_url = "http://127.0.0.1:3000/api/";
+let api_url = "apv.yelka.ru:3000/api/";
 
 let defaultCatch_CB = function (component, err) {
   component.$notify({
