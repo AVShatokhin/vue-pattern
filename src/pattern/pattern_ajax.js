@@ -469,7 +469,7 @@ let pattern_ajax = {
   },
 };
 
-for (let method in app) {
+for (let method in app_ajax) {
   pattern_ajax[method] = app_ajax[method];
 }
 
