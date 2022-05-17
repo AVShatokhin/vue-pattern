@@ -7,6 +7,7 @@
       :data-background-color="sidebarBackgroundColor"
       :title="appName"
       :link="appLink"
+      :logo="appLogo"
     >
       <user-menu
         :title="userData.extended.name"
@@ -129,6 +130,9 @@ export default {
     },
     appLink() {
       return this.appConfig.appLink;
+    },
+    appLogo() {
+      return this.appConfig.appLogo;
     },
   },
   methods: {

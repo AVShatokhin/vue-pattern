@@ -8,7 +8,9 @@
   >
     <div class="logo">
       <a :href="link" class="simple-text logo-mini" target="_blank">
-        <div class="logo-img">
+        <div v-if="logo == ''"></div>
+        <!-- logo-img  или photo-->
+        <div v-else class="logo-img">
           <img :src="logo" />
         </div>
       </a>
@@ -66,7 +68,6 @@ export default {
       type: String,
       default: "/",
     },
-
     activeColor: {
       type: String,
       default: "green",
@@ -97,7 +98,7 @@ export default {
     },
     logo: {
       type: String,
-      default: "./logo.png",
+      default: "",
     },
     sidebarLinks: {
       type: Array,
