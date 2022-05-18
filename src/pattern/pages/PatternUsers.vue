@@ -103,24 +103,11 @@
                 ></pattern-user-table-roles>
               </md-table-cell>
               <md-table-cell md-label="">
-                <md-button
-                  @click.native="showConfirmUserDelete = true"
-                  style="width: 230px; height: 41px; margin-right: 15px"
-                  class="md-danger"
+                <pattern-user-table-delete-button
+                  :uid="item.uid"
+                  @adminDeleteUser="adminDeleteUser"
                 >
-                  <span class="material-icons"> no_accounts </span>
-                  Удалить пользователя
-                  <md-dialog-confirm
-                    :md-active.sync="showConfirmUserDelete"
-                    md-title="Удалить пользователя?"
-                    md-content="Эта операция приведёт к полному
-                  удалению пользователя.<br />Отменить операцию нельзя."
-                    md-confirm-text="Удалить"
-                    md-cancel-text="Отмена"
-                    @md-cancel="showConfirmUserDelete = false"
-                    @md-confirm="adminDeleteUser(item.uid)"
-                  />
-                </md-button>
+                </pattern-user-table-delete-button>
               </md-table-cell>
             </md-table-row>
           </md-table>
@@ -209,6 +196,7 @@ import { Pagination } from "@/components";
 import PatternUserTableListItem from "../components/cards/PatternUserTableListItem.vue";
 import PatternUserTableStatus from "../components/cards/PatternUserTableStatus.vue";
 import PatternUserTableRoles from "../components/cards/PatternUserTableRoles.vue";
+import PatternUserTableDeleteButton from "../components/cards/PatternUserTableDeleteButton.vue";
 
 export default {
   components: {
@@ -216,6 +204,7 @@ export default {
     PatternUserTableListItem,
     PatternUserTableStatus,
     PatternUserTableRoles,
+    PatternUserTableDeleteButton,
   },
   computed: {
     to() {
@@ -350,10 +339,10 @@ export default {
         }
       );
     },
-    adminDeleteUser(uid) {
+    adminDeleteUser(data) {
       this.ajax.adminDeleteUser(
         this,
-        { uid },
+        { uid: data.uid },
         (r) => {
           if (r.status == "ok") {
             this.loadUsers();
