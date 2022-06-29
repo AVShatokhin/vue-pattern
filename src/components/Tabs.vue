@@ -30,7 +30,11 @@
         <div class="tab-content">
           <template v-for="(item, index) in tabName">
             <template v-if="isActivePanel(tabName[index])">
-              <div :class="getTabContent(index + 1)" :key="item">
+              <div
+                :class="getTabContent(index + 1)"
+                :key="item"
+                style="width: 100%"
+              >
                 <slot :name="getTabContent(index + 1)">
                   This is the default text!
                 </slot>
