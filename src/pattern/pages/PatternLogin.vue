@@ -57,37 +57,53 @@
 <script>
 import { PatternLoginCard } from "@/pattern/components";
 //import app_menuItems from "@/app/app_menuItems.js";
-import pattern_menuItems from "@/pattern/pattern_menuItems.js";
+import { patternItems } from "@/pattern/pattern_menuItems.js";
+import { patternDirs } from "@/pattern/pattern_menuItems.js";
+
 // import { ajax } from "@/pattern/pattern_ajax.js";
+
+let check_roles = (item, roles, result) => {
+  let __match = false;
+  item.roles.forEach((__role) => {
+    if (roles.filter((r) => r == __role).length > 0) {
+      __match = true;
+    }
+  });
+  if (__match) {
+    result.push(item);
+  }
+
+  return __match;
+};
 
 let calcMenuItems = (roles) => {
   let __newMenu = [];
 
-  let check_roles = (__item, roles) => {
-    let __match = false;
-    __item.roles.forEach((__role) => {
-      if (roles.filter((r) => r == __role).length > 0) {
-        __match = true;
-      }
-    });
-    if (__match) {
-      __newMenu.push(__item);
-    }
-  };
-
-  // app_menuItems.forEach((__item) => {
-  //   check_roles(__item, roles);
-  // });
-
-  pattern_menuItems.forEach((__item) => {
-    check_roles(__item, roles);
+  patternItems.forEach((__item) => {
+    check_roles(__item, roles, __newMenu);
   });
 
   return __newMenu;
 };
 
+let calcMenuDirs = (roles) => {
+  patternDirs.forEach((__dir) => {
+    let __newDirItemsArray = [];
+    __dir.items.forEach((__item) => {
+      check_roles(__item, roles, __newDirItemsArray);
+    });
+    __dir.items = __newDirItemsArray;
+  });
+
+  return patternDirs;
+};
+
 let initLogin = (component, r) => {
-  let __menuItems = calcMenuItems(r.userData.roles);
+  let __menuItems = {
+    dirs: calcMenuDirs(r.userData.roles),
+    items: calcMenuItems(r.userData.roles),
+  };
+
   localStorage.setItem("userData", JSON.stringify(r.userData));
   localStorage.setItem("menuItems", JSON.stringify(__menuItems));
   localStorage.setItem("frontConfig", JSON.stringify(r.frontConfig));

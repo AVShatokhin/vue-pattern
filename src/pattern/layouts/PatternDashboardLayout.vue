@@ -16,6 +16,20 @@
 
       <!-- <mobile-menu></mobile-menu> -->
       <template slot="links">
+        <div v-for="dir in $store.getters.menuDirs" :key="dir.name">
+          <sidebar-item :link="{ name: dir.name, icon: dir.icon }">
+            <sidebar-item
+              v-for="item in dir.items"
+              :key="item.path"
+              :link="{
+                name: item.name,
+                icon: item.icon,
+                path: item.path,
+              }"
+            >
+            </sidebar-item>
+          </sidebar-item>
+        </div>
         <sidebar-item
           v-for="item in $store.getters.menuItems"
           :key="item.path"
@@ -26,23 +40,6 @@
           }"
         >
         </sidebar-item>
-
-        <!-- <sidebar-item
-          :link="{
-            name: 'Панель управления',
-            icon: 'dashboard',
-            path: '/dashboard',
-          }"
-        >
-        </sidebar-item>
-        <sidebar-item
-          :link="{
-            name: 'Пользователи',
-            icon: 'supervisor_account',
-            path: '/users',
-          }"
-        >
-        </sidebar-item> -->
       </template>
     </side-bar>
     <div class="main-panel">
@@ -102,14 +99,16 @@ import ContentFooter from "@/app/components/PatternContentFooter.vue";
 // import MobileMenu from "@/pattern/components/PatternMobileMenu.vue";
 import UserMenu from "@/pattern/components/PatternUserMenu.vue";
 import { ZoomCenterTransition } from "vue2-transitions";
+//import SideBar from "../../components/SidebarPlugin/SideBar.vue";
 
 export default {
   components: {
     TopNavbar,
     ContentFooter,
-    // MobileMenu,
-    UserMenu,
     ZoomCenterTransition,
+    //MobileMenu
+    UserMenu,
+    //SideBar,
   },
   data() {
     return {

@@ -1,7 +1,8 @@
 /* eslint-disable */
-import app_menuItems from "@/app/app_menuItems.js";
+import { items } from "@/app/app_menuItems.js";
+import { dirs } from "@/app/app_menuItems.js";
 
-export default [
+let patternItems = [
   {
     name: "Пользователи",
     icon: "supervisor_account",
@@ -9,5 +10,10 @@ export default [
     roles: ["admin"],
   },
 ]
-  .concat(app_menuItems)
+  .concat(items)
   .reverse();
+
+let patternDirs = dirs;
+
+export { patternItems };
+export { patternDirs };

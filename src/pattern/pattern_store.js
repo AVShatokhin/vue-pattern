@@ -76,7 +76,10 @@ let getters = {
     }
   },
   menuItems(state) {
-    return state.menuItems;
+    return state.menuItems.items;
+  },
+  menuDirs(state) {
+    return state.menuItems.dirs;
   },
   no_ava(state) {
     return state.userData.extended?.ava_url ? false : true;
