@@ -14,6 +14,13 @@
 import Vue from "vue";
 import store from "./pattern/pattern_store.js";
 import ajax from "./pattern/pattern_ajax.js";
+import {
+  showErrorNotify,
+  showSuccessNotify,
+} from "./pattern/pattern_notify.js";
+
+import { formatTime } from "./pattern/pattern_formatTime.js";
+
 import appConfig from "./app/app_main.js";
 
 import VueRouter from "vue-router";
@@ -28,6 +35,10 @@ import axios from "axios";
 Vue.prototype.axios = axios;
 Vue.prototype.appConfig = appConfig;
 Vue.prototype.ajax = ajax;
+Vue.prototype.showErrorNotify = showErrorNotify;
+Vue.prototype.showSuccessNotify = showSuccessNotify;
+Vue.prototype.formatTime = formatTime;
+
 Vue.config.productionTip = false;
 
 // router setup

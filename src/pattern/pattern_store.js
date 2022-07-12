@@ -84,6 +84,17 @@ let getters = {
   no_ava(state) {
     return state.userData.extended?.ava_url ? false : true;
   },
+  checkPermition(state) {
+    return (permitions) => {
+      let _permit = false;
+      permitions.forEach((role) => {
+        if (state.userData.roles.includes(role)) {
+          _permit = true;
+        }
+      });
+      return _permit;
+    };
+  },
 };
 
 for (let method in app_mutations) {
