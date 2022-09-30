@@ -12,6 +12,8 @@
 // * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 import Vue from "vue";
+import excel from "vue-excel-export";
+
 import store from "./pattern/pattern_store.js";
 import ajax from "./pattern/pattern_ajax.js";
 import {
@@ -46,6 +48,7 @@ Vue.config.productionTip = false;
 import routes from "./pattern/pattern_routes"; // активация боевого маршрута (12.01.2022 by AVShatokhin)
 
 // plugin setup
+Vue.use(excel);
 Vue.use(VueRouter);
 Vue.use(DashboardPlugin);
 Vue.use(SideBar);
