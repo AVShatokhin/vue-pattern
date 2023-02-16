@@ -14,9 +14,11 @@
 4) nvm install 12.19.1 
 
 Для установки зависимостей:
+
 5) npm install
 
 Сборка:
+
 7) npm run build
 8) перед сборкой можно сделать npm run cp для копирования файлов из приложения ../src/pattern/patternPublic/*
 
