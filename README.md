@@ -11,7 +11,9 @@
 1) sudo yum install curl -y 
 2) curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash   
 3) source ~/.bashrc
-4) nvm install 14.16.1 
+4) yum install -y gcc
+5) yum groupinstall 'Development Tools'
+6) nvm install 14.16.1
 
 Для установки зависимостей:
 
