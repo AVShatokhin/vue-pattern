@@ -3,7 +3,8 @@
   "version": "1.5.0",
   "private": true,
   "scripts": {
-    "cp": "powershell -command \"cp -r ./src/pattern/patternPublic/* ./public/; cp ./src/app/favicon.png ./public/; cp ./src/app/logo.png ./public/\"",
+    "cp": "cp -r ./src/pattern/patternPublic/* ./public/; cp ./src/app/favicon.png ./public/; cp ./src/app/logo.png ./public/",
+    "copy": "powershell -command \"cp -r ./src/pattern/patternPublic/* ./public/; cp ./src/app/favicon.png ./public/; cp ./src/app/logo.png ./public/\"",
     "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
