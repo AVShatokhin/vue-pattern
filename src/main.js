@@ -21,7 +21,10 @@ import {
   showSuccessNotify,
 } from "./pattern/pattern_notify.js";
 
-import { formatTime } from "./pattern/pattern_formatTime.js";
+import {
+  formatTime,
+  formatTimeSplitted,
+} from "./pattern/pattern_formatTime.js";
 
 import appConfig from "./app/app_main.js";
 
@@ -40,6 +43,7 @@ Vue.prototype.ajax = ajax;
 Vue.prototype.showErrorNotify = showErrorNotify;
 Vue.prototype.showSuccessNotify = showSuccessNotify;
 Vue.prototype.formatTime = formatTime;
+Vue.prototype.formatTimeSplitted = formatTimeSplitted;
 
 Vue.config.productionTip = false;
 
